@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6B5844C4-BBF3-43D9-9B58-6AEA1FC6E548}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Api_ng_sample_code</RootNamespace>
+    <AssemblyName>Api-ng-sample-code</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Api_ng_sample_code.Program</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IClient.cs" />
+    <Compile Include="JsonRpcClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Json\JsonConvert.cs" />
+    <Compile Include="Json\JsonRequest.cs" />
+    <Compile Include="Json\JsonResponse.cs" />
+    <Compile Include="Json\RescriptRequest.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RescriptClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TO\APINGException.cs" />
+    <Compile Include="TO\Competition.cs" />
+    <Compile Include="TO\CompetitionResult.cs" />
+    <Compile Include="TO\Event.cs" />
+    <Compile Include="TO\EventResult.cs" />
+    <Compile Include="TO\EventType.cs" />
+    <Compile Include="TO\EventTypeResult.cs" />
+    <Compile Include="TO\ExBestOffersOverrides.cs" />
+    <Compile Include="TO\Exception.cs" />
+    <Compile Include="TO\ExchangePrices.cs" />
+    <Compile Include="TO\ExecutionReportErrorCode.cs" />
+    <Compile Include="TO\ExecutionReportStatus.cs" />
+    <Compile Include="TO\InstructionReportErrorCode.cs" />
+    <Compile Include="TO\InstructionReportStatus.cs" />
+    <Compile Include="TO\LimitOnCloseOrder.cs" />
+    <Compile Include="TO\LimitOrder.cs" />
+    <Compile Include="TO\MarketBettingType.cs" />
+    <Compile Include="TO\MarketBook.cs" />
+    <Compile Include="TO\MarketCatalogue.cs" />
+    <Compile Include="TO\MarketDescription.cs" />
+    <Compile Include="TO\MarketFilter.cs" />
+    <Compile Include="TO\MarketOnCloseOrder.cs" />
+    <Compile Include="TO\MarketProjection.cs" />
+    <Compile Include="TO\MarketSort.cs" />
+    <Compile Include="TO\MarketStatus.cs" />
+    <Compile Include="TO\Match.cs" />
+    <Compile Include="TO\MatchProjection.cs" />
+    <Compile Include="TO\Order.cs" />
+    <Compile Include="TO\OrderProjection.cs" />
+    <Compile Include="TO\OrderStatus.cs" />
+    <Compile Include="TO\OrderType.cs" />
+    <Compile Include="TO\PersistenceType.cs" />
+    <Compile Include="TO\PlaceExecutionReport.cs" />
+    <Compile Include="TO\PlaceInstruction.cs" />
+    <Compile Include="TO\PlaceInstructionReport.cs" />
+    <Compile Include="TO\PriceData.cs" />
+    <Compile Include="TO\PriceProjection.cs" />
+    <Compile Include="TO\PriceSize.cs" />
+    <Compile Include="TO\RollUpModel.cs" />
+    <Compile Include="TO\Runner.cs" />
+    <Compile Include="TO\RunnerDescription.cs" />
+    <Compile Include="TO\RunnerStatus.cs" />
+    <Compile Include="TO\Side.cs" />
+    <Compile Include="TO\StartingPrices.cs" />
+    <Compile Include="TO\TimeRange.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

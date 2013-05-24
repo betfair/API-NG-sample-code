@@ -1,0 +1,14 @@
+C:\Users\doowad\Documents\Visual Studio 2010\Projects\Api-ng-sample-code\Api-ng-sample-code\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\doowad\Documents\Visual Studio 2010\Projects\Api-ng-sample-code\Api-ng-sample-code\bin\Debug\Api-ng-sample-code.exe
+C:\Users\doowad\Documents\Visual Studio 2010\Projects\Api-ng-sample-code\Api-ng-sample-code\bin\Debug\Api-ng-sample-code.pdb
+C:\Users\doowad\Documents\Visual Studio 2010\Projects\Api-ng-sample-code\Api-ng-sample-code\bin\Debug\Newtonsoft.Json.dll
+C:\Users\doowad\Documents\Visual Studio 2010\Projects\Api-ng-sample-code\Api-ng-sample-code\bin\Debug\Newtonsoft.Json.pdb
+C:\Users\doowad\Documents\Visual Studio 2010\Projects\Api-ng-sample-code\Api-ng-sample-code\obj\x86\Debug\Api-ng-sample-code.exe
+C:\Users\doowad\Documents\Visual Studio 2010\Projects\Api-ng-sample-code\Api-ng-sample-code\obj\x86\Debug\Api-ng-sample-code.pdb
+C:\Users\doowad\Perforce\Perforce.dev.uk.betfair_1666\doowad_HAM09993\se\development\HEAD\bf-api-ng\sample-code\cSharp\Api-ng-sample-code\Api-ng-sample-code\bin\Debug\Api-ng-sample-code.exe
+C:\Users\doowad\Perforce\Perforce.dev.uk.betfair_1666\doowad_HAM09993\se\development\HEAD\bf-api-ng\sample-code\cSharp\Api-ng-sample-code\Api-ng-sample-code\bin\Debug\Api-ng-sample-code.pdb
+C:\Users\doowad\Perforce\Perforce.dev.uk.betfair_1666\doowad_HAM09993\se\development\HEAD\bf-api-ng\sample-code\cSharp\Api-ng-sample-code\Api-ng-sample-code\bin\Debug\Newtonsoft.Json.dll
+C:\Users\doowad\Perforce\Perforce.dev.uk.betfair_1666\doowad_HAM09993\se\development\HEAD\bf-api-ng\sample-code\cSharp\Api-ng-sample-code\Api-ng-sample-code\bin\Debug\Newtonsoft.Json.pdb
+C:\Users\doowad\Perforce\Perforce.dev.uk.betfair_1666\doowad_HAM09993\se\development\HEAD\bf-api-ng\sample-code\cSharp\Api-ng-sample-code\Api-ng-sample-code\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\doowad\Perforce\Perforce.dev.uk.betfair_1666\doowad_HAM09993\se\development\HEAD\bf-api-ng\sample-code\cSharp\Api-ng-sample-code\Api-ng-sample-code\obj\x86\Debug\Api-ng-sample-code.exe
+C:\Users\doowad\Perforce\Perforce.dev.uk.betfair_1666\doowad_HAM09993\se\development\HEAD\bf-api-ng\sample-code\cSharp\Api-ng-sample-code\Api-ng-sample-code\obj\x86\Debug\Api-ng-sample-code.pdb

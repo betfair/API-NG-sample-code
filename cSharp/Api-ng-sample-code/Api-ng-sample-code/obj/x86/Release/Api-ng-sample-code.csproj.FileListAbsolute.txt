@@ -1,0 +1,7 @@
+C:\Users\doowad\Perforce\Perforce.dev.uk.betfair_1666\doowad_HAM09993\se\development\HEAD\bf-api-ng\sample-code\cSharp\Api-ng-sample-code\Api-ng-sample-code\bin\Release\Api-ng-sample-code.exe
+C:\Users\doowad\Perforce\Perforce.dev.uk.betfair_1666\doowad_HAM09993\se\development\HEAD\bf-api-ng\sample-code\cSharp\Api-ng-sample-code\Api-ng-sample-code\bin\Release\Api-ng-sample-code.pdb
+C:\Users\doowad\Perforce\Perforce.dev.uk.betfair_1666\doowad_HAM09993\se\development\HEAD\bf-api-ng\sample-code\cSharp\Api-ng-sample-code\Api-ng-sample-code\bin\Release\Newtonsoft.Json.dll
+C:\Users\doowad\Perforce\Perforce.dev.uk.betfair_1666\doowad_HAM09993\se\development\HEAD\bf-api-ng\sample-code\cSharp\Api-ng-sample-code\Api-ng-sample-code\bin\Release\Newtonsoft.Json.pdb
+C:\Users\doowad\Perforce\Perforce.dev.uk.betfair_1666\doowad_HAM09993\se\development\HEAD\bf-api-ng\sample-code\cSharp\Api-ng-sample-code\Api-ng-sample-code\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Users\doowad\Perforce\Perforce.dev.uk.betfair_1666\doowad_HAM09993\se\development\HEAD\bf-api-ng\sample-code\cSharp\Api-ng-sample-code\Api-ng-sample-code\obj\x86\Release\Api-ng-sample-code.exe
+C:\Users\doowad\Perforce\Perforce.dev.uk.betfair_1666\doowad_HAM09993\se\development\HEAD\bf-api-ng\sample-code\cSharp\Api-ng-sample-code\Api-ng-sample-code\obj\x86\Release\Api-ng-sample-code.pdb
