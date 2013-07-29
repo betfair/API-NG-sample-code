@@ -1,0 +1,8 @@
+C:\Victor\SampleAPI\SampleAPI\SampleAPI\bin\Debug\SampleAPI.exe
+C:\Victor\SampleAPI\SampleAPI\SampleAPI\bin\Debug\SampleAPI.pdb
+C:\Victor\SampleAPI\SampleAPI\SampleAPI\obj\x86\Debug\SampleAPI.Form1.resources
+C:\Victor\SampleAPI\SampleAPI\SampleAPI\obj\x86\Debug\SampleAPI.Properties.Resources.resources
+C:\Victor\SampleAPI\SampleAPI\SampleAPI\obj\x86\Debug\SampleAPI.exe
+C:\Victor\SampleAPI\SampleAPI\SampleAPI\obj\x86\Debug\SampleAPI.pdb
+C:\Victor\SampleAPI\SampleAPI\SampleAPI\obj\x86\Debug\SampleAPI.csprojResolveAssemblyReference.cache
+C:\Victor\SampleAPI\SampleAPI\SampleAPI\obj\x86\Debug\SampleAPI.csproj.GenerateResource.Cache

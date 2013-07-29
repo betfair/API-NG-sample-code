@@ -22,7 +22,7 @@ function DemoApiNgClient(){
     function updateHeaders(operationName) {
         return  {
             port: 443,
-            hostname: 'beta-api.betfair.com',
+            hostname: 'api.betfair.com/exchange/betting',
             path: '/rest/v1.0/' + operationName + '/',
             method: 'POST',
             headers: {

@@ -148,7 +148,6 @@ public class ApiNGJRescriptDemo {
                 } else if (placeBetResult.getStatus() == ExecutionReportStatus.FAILURE) {
                     System.out.println("Your bet has NOT been placed :*( ");
                     System.out.println("The error is: " + placeBetResult.getErrorCode() + ": " + placeBetResult.getErrorCode().getMessage());
-                    System.out.println("Sorry, more luck next time\n\n");
                 }
             } else {
                 System.out.println("Sorry, no runners found\n\n");

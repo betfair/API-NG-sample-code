@@ -30,7 +30,7 @@ calling getEventTypes operation
 """
 
 def getEventTypes():
-    endPoint = 'https://beta-api.betfair.com/rest/v1.0/listEventTypes/'
+    endPoint = 'https://api.betfair.com/exchange/betting/rest/v1.0/listEventTypes/'
     event_type_req = '{"filter":{ }}'
     print 'Calling listEventTypes to get event Type ID'
     eventTypesResponse = callAping(endPoint, event_type_req)
@@ -65,7 +65,7 @@ Calling marketCatalouge to get marketDetails
 def getMarketCatalouge(eventTypeID):
     if(eventTypeID is not None):
         print 'Calling listMarketCatalouge Operation to get MarketID and selectionId'
-        endPoint = 'https://beta-api.betfair.com/rest/v1.0/listMarketCatalogue/'
+        endPoint = 'https://api.betfair.com/exchange/betting/rest/v1.0/listMarketCatalogue/'
         now = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%SZ')
         market_catalouge_req = '{"filter":{"eventTypeIds":["' + eventTypeID + '"],"marketCountries":["GB"],"marketTypeCodes":["WIN"],'\
                                                                               '"marketStartTime":{"from":"' + now + '"}},"sort":"FIRST_TO_START","maxResults":"1","marketProjection":["RUNNER_METADATA"]}'
@@ -99,7 +99,7 @@ def getMarketBook(marketId):
         """
         print  market_book_req
         """
-        endPoint = 'https://beta-api.betfair.com/rest/v1.0/listMarketBook/'
+        endPoint = 'https://api.betfair.com/exchange/betting/rest/v1.0/listMarketBook/'
 
         market_book_response = callAping(endPoint, market_book_req)
         """

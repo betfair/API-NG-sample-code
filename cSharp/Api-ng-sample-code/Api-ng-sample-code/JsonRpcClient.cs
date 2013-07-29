@@ -38,7 +38,7 @@ namespace Api_ng_sample_code
 
         public JsonRpcClient(string endPoint, string appKey, string sessionToken)
 		{
-            this.EndPoint = endPoint + "/json-rpc";
+            this.EndPoint = endPoint + "/json-rpc/v1";
             CustomHeaders = new NameValueCollection();
             if (appKey != null)
             {

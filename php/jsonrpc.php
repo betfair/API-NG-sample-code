@@ -166,7 +166,7 @@ function printBetResult($betResult)
 function sportsApingRequest($appKey, $sessionToken, $operation, $params)
 {
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "https://beta-api.betfair.com/json-rpc");
+    curl_setopt($ch, CURLOPT_URL, "https://api.betfair.com/exchange/betting/json-rpc/v1");
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(

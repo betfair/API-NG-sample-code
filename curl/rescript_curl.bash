@@ -8,7 +8,7 @@
 APP_KEY=$1
 SESSION_TOKEN=$2
 
-HOST=https://beta-api.betfair.com
+HOST=https://api.betfair.com/exchange/betting
 PORT=443
 
 

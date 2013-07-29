@@ -47,9 +47,9 @@ public class ApiNGDemo {
             sessionToken = args[1];
             jsonOrRescript = args[2];
 
-            if(jsonOrRescript.equals("json-rpc")){
+            if(jsonOrRescript.equalsIgnoreCase("json-rpc")){
                 jsonRpcRequest=true;
-            } else if(jsonOrRescript.equals("rescript")){
+            } else if(jsonOrRescript.equalsIgnoreCase("rescript")){
                 jsonRpcRequest=false;
             }
 

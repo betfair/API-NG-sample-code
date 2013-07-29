@@ -156,7 +156,7 @@ def placeBet(marketId, selectionId):
         """
 
 
-url = "https://beta-api.betfair.com/json-rpc"
+url = "https://api.betfair.com/exchange/betting/json-rpc/v1"
 
 """
 headers = { 'X-Application' : 'xxxxxx', 'X-Authentication' : 'xxxxx' ,'content-type' : 'application/json' }

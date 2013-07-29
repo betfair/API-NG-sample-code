@@ -17,9 +17,9 @@ var DEFAULT_ENCODING = 'utf-8';
 var DEFAULT_JSON_FORMAT = '\t';
 
 var options = {
-    hostname: 'beta-api.betfair.com',
+    hostname: 'api.betfair.com/exchange/betting',
     port: 443,
-    path: '/json-rpc',
+    path: '/json-rpc/v1',
     method: 'POST',
     headers: {
         'X-Application' : appkey,

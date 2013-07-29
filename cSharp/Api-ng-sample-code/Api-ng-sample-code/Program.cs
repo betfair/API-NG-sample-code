@@ -9,7 +9,7 @@ namespace Api_ng_sample_code
 {
     class Program
     {
-        private static string Url = "https://beta-api.betfair.com";
+        private static string Url = "https://api.betfair.com/exchange/betting";
 
         static void Main(string[] args)
         {

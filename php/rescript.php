@@ -163,7 +163,7 @@ function printBetResult($betResult)
 function sportsApingRequest($appKey, $sessionToken, $operation, $params)
 {
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "https://beta-api.betfair.com/rest/v1/$operation/");
+    curl_setopt($ch, CURLOPT_URL, "https://api.betfair.com/exchange/betting/rest/v1/$operation/");
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
