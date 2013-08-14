@@ -16,8 +16,8 @@ namespace SampleAPI
     {
 
         private static readonly string KeepAliveURL = @"https://identitysso.betfair.com/api/keepAlive";
-        private static readonly string LogonURL = @"https://identitysso.betfair.com/view/login?product=9TdmB24zWtApFox0&url=https://www.betfair.com";
-        private static readonly string LogoutURL = @"https://identitysso.betfair.com/api/logout?product=9TdmB24zWtApFox0&url=https://www.betfair.com";
+        private static string LogonURL = @"https://identitysso.betfair.com/view/login?product=[APPKEY]&url=https://www.betfair.com";
+        private static string LogoutURL = @"https://identitysso.betfair.com/api/logout?product=[APPKEY]&url=https://www.betfair.com";
 
         private bool m_LoggedOut = true;
         private string m_SSOID;
@@ -30,11 +30,13 @@ namespace SampleAPI
 
             m_KeepAliveTimer = new System.Timers.Timer();
 
-            //Give embeded web browser Betfair api login page URL
-            System.Uri u = new Uri(LogonURL);
-        
-            this.webBrowser1.Url = u;
 
+            ToolTip tt = new ToolTip();
+            tt.IsBalloon = true;
+            tt.InitialDelay = 0;
+            tt.ShowAlways = true;
+            tt.SetToolTip(this.grpAppKey, "Please enter your developer Appkey");
+  
         }
 
         private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
@@ -136,6 +138,27 @@ namespace SampleAPI
            {
                this.txtMessage.Text = p_Text;
            }
+       }
+
+
+       private void btnLogon_Click(object sender, EventArgs e)
+       {
+           //Put Appkey in Logon anf Logout URLs
+           LogonURL = LogonURL.Replace("[APPKEY]", this.txtAppKey.Text);
+           LogoutURL = LogoutURL.Replace("[APPKEY]", this.txtAppKey.Text);
+
+           //Give embeded web browser Betfair api login page URL
+           System.Uri u = new Uri(LogonURL);
+
+           this.webBrowser1.Url = u;
+
+           this.btnLogout.Enabled = true;
+
+       }
+
+       private void txtAppKey_KeyUp(object sender, KeyEventArgs e)
+       {
+           this.btnLogon.Enabled = true;
        }
    
        
