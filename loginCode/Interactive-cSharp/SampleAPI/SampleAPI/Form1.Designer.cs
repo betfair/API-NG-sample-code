@@ -1,4 +1,4 @@
-namespace SampleAPI
+﻿namespace SampleAPI
 {
     partial class Form1
     {
@@ -31,6 +31,10 @@ namespace SampleAPI
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.btnLogout = new System.Windows.Forms.Button();
             this.txtMessage = new System.Windows.Forms.TextBox();
+            this.grpAppKey = new System.Windows.Forms.GroupBox();
+            this.txtAppKey = new System.Windows.Forms.TextBox();
+            this.btnLogon = new System.Windows.Forms.Button();
+            this.grpAppKey.SuspendLayout();
             this.SuspendLayout();
             // 
             // webBrowser1
@@ -46,7 +50,8 @@ namespace SampleAPI
             // 
             // btnLogout
             // 
-            this.btnLogout.Location = new System.Drawing.Point(12, 573);
+            this.btnLogout.Enabled = false;
+            this.btnLogout.Location = new System.Drawing.Point(878, 573);
             this.btnLogout.Name = "btnLogout";
             this.btnLogout.Size = new System.Drawing.Size(135, 23);
             this.btnLogout.TabIndex = 2;
@@ -63,17 +68,50 @@ namespace SampleAPI
             this.txtMessage.Size = new System.Drawing.Size(637, 60);
             this.txtMessage.TabIndex = 3;
             // 
+            // grpAppKey
+            // 
+            this.grpAppKey.Controls.Add(this.txtAppKey);
+            this.grpAppKey.Location = new System.Drawing.Point(27, 551);
+            this.grpAppKey.Name = "grpAppKey";
+            this.grpAppKey.Size = new System.Drawing.Size(281, 64);
+            this.grpAppKey.TabIndex = 4;
+            this.grpAppKey.TabStop = false;
+            this.grpAppKey.Text = "Application Key";
+            // 
+            // txtAppKey
+            // 
+            this.txtAppKey.Location = new System.Drawing.Point(33, 25);
+            this.txtAppKey.Name = "txtAppKey";
+            this.txtAppKey.Size = new System.Drawing.Size(218, 20);
+            this.txtAppKey.TabIndex = 0;
+            this.txtAppKey.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtAppKey_KeyUp);
+            // 
+            // btnLogon
+            // 
+            this.btnLogon.Enabled = false;
+            this.btnLogon.Location = new System.Drawing.Point(328, 576);
+            this.btnLogon.Name = "btnLogon";
+            this.btnLogon.Size = new System.Drawing.Size(135, 23);
+            this.btnLogon.TabIndex = 5;
+            this.btnLogon.Text = "Show Logon Page";
+            this.btnLogon.UseVisualStyleBackColor = true;
+            this.btnLogon.Click += new System.EventHandler(this.btnLogon_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.ClientSize = new System.Drawing.Size(1040, 620);
+            this.ClientSize = new System.Drawing.Size(1040, 639);
+            this.Controls.Add(this.btnLogon);
+            this.Controls.Add(this.grpAppKey);
             this.Controls.Add(this.btnLogout);
             this.Controls.Add(this.webBrowser1);
             this.Controls.Add(this.txtMessage);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.grpAppKey.ResumeLayout(false);
+            this.grpAppKey.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -84,6 +122,9 @@ namespace SampleAPI
         private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.Button btnLogout;
         private System.Windows.Forms.TextBox txtMessage;
+        private System.Windows.Forms.GroupBox grpAppKey;
+        private System.Windows.Forms.TextBox txtAppKey;
+        private System.Windows.Forms.Button btnLogon;
 
     }
 }
