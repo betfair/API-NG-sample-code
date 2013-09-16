@@ -83,7 +83,11 @@ namespace Api_ng_sample_code
 
                 var marketSort = MarketSort.FIRST_TO_START;
                 var maxResults = "1";
-                ISet<MarketProjection> marketProjections = null;
+				
+				//as an example we requested runner metadata 
+                ISet<MarketProjection> marketProjections = new HashSet<MarketProjection>();
+                marketProjections.Add(MarketProjection.RUNNER_METADATA);
+
 
                 Console.WriteLine("\nGetting the next available horse racing market");
                 var marketCatalogues = client.listMarketCatalogue(marketFilter, marketProjections, marketSort, maxResults);
