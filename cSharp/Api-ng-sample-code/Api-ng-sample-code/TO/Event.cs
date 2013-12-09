@@ -23,7 +23,7 @@ namespace Api_ng_sample_code.TO
         [JsonProperty(PropertyName = "venue")]
         public string Venue { get; set; }
 
-        [JsonProperty(PropertyName = "openData")]
+        [JsonProperty(PropertyName = "openDate")]
         public DateTime? OpenDate { get; set; }
 
         public override string ToString()
