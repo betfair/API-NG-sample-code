@@ -72,6 +72,7 @@ public class ApiNgJsonRpcOperations extends ApiNgOperations{
         params.put(FILTER, filter);
         params.put(SORT, sort);
         params.put(MAX_RESULT, maxResult);
+        params.put(MARKET_PROJECTION, marketProjection);
         String result = getInstance().makeRequest(ApiNgOperation.LISTMARKETCATALOGUE.getOperationName(), params, appKey, ssoId);
         if(ApiNGDemo.isDebug())
             System.out.println("\nResponse: "+result);
