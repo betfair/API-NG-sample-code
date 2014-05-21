@@ -10,7 +10,7 @@ namespace Api_ng_sample_code.TO
     [JsonConverter(typeof(StringEnumConverter))]
     public enum InstructionReportErrorCode
     {
-        Ok,
+        OK,
         INVALID_BET_SIZE,					
         INVALID_RUNNER,						
         BET_TAKEN_OR_LAPSED,				
