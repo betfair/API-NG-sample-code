@@ -11,7 +11,7 @@ Each of the basic language samples demonstrates a basic use case of placing a be
 
 For the sake of simplictity and ease of understanding, these samples are not intended to show best practice for optimisations for speed or throughput. 
 
-A comprehensive description of the samples can be found <a href="http://my.developer.betfair.com/">here.</a>
+A comprehensive description of the samples can be found <a href="https://api.developer.betfair.com/services/webapps/docs/display/1smk3cen4v3lu3yomq5qye0ni/Sample+Code">here.</a>
 
 There is also a limited sample of login examples within the loginCode subdirectory and an Android sample app in the android subdirectory.
 
