@@ -29,6 +29,9 @@ public abstract class ApiNgOperations {
     protected final String INSTRUCTIONS = "instructions";
     protected final String CUSTOMER_REF = "customerRef";
     protected final String MARKET_PROJECTION = "marketProjection";
+    protected final String PRICE_PROJECTION = "priceProjection";
+    protected final String MATCH_PROJECTION = "matchProjection";
+    protected final String ORDER_PROJECTION = "orderProjection";
     protected final String locale = Locale.getDefault().toString();
 
 	public abstract List<EventTypeResult> listEventTypes(MarketFilter filter, String appKey, String ssoId) throws APINGException;

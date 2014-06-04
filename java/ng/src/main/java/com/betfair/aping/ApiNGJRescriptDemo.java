@@ -90,6 +90,7 @@ public class ApiNGJRescriptDemo {
             PriceProjection priceProjection = new PriceProjection();
             Set<PriceData> priceData = new HashSet<PriceData>();
             priceData.add(PriceData.EX_BEST_OFFERS);
+            priceProjection.setPriceData(priceData);
 
             //In this case we don't need these objects so they are declared null
             OrderProjection orderProjection = null;
