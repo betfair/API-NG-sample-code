@@ -1,5 +1,6 @@
 package com.betfair.aping.api;
 
+import com.betfair.aping.entities.CompetitionResult;
 import com.betfair.aping.entities.EventTypeResult;
 import com.betfair.aping.entities.MarketBook;
 import com.betfair.aping.entities.MarketCatalogue;
@@ -45,6 +46,8 @@ public abstract class ApiNgOperations {
 	public abstract PlaceExecutionReport placeOrders(String marketId, List<PlaceInstruction> instructions, String customerRef , String appKey, String ssoId) throws APINGException;
 
     protected abstract String makeRequest(String operation, Map<String, Object> params, String appKey, String ssoToken) throws  APINGException;
+     public abstract List<CompetitionResult> listCompetitions(
+			MarketFilter filter, String locale, String appKey, String ssoId) throws APINGException;
 
 }
 
