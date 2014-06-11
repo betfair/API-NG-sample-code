@@ -116,6 +116,14 @@ public class ApiNgRescriptOperations extends ApiNgOperations {
 		return null;
 	}
 
+	@Override
+	public List<CountryCodeResult> listCountries(MarketFilter filter,
+			String locale, String appKey, String ssoId) throws APINGException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 }
 
