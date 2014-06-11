@@ -49,5 +49,12 @@ public abstract class ApiNgOperations {
      public abstract List<CompetitionResult> listCompetitions(
 			MarketFilter filter, String locale, String appKey, String ssoId) throws APINGException;
 
+	public abstract List<CompetitionResult> listCompetitions(
+			MarketFilter filter, String locale, String appKey, String ssoId)
+			throws APINGException;
+
+	public abstract List<CountryCodeResult> listCountries(MarketFilter filter,
+			String locale, String appKey, String ssoId) throws APINGException;
+
 }
 
