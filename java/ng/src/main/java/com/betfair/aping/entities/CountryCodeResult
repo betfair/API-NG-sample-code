@@ -1,0 +1,17 @@
+package com.betfair.aping.entities;
+
+public class CountryCodeResult {
+	private String countryCode ;
+	private int marketCount ;
+	
+	public void setCountryCode(String countryCode) { this.countryCode = countryCode ;}
+	public String getCountryCode() { return this.countryCode ;}
+	public void setMarketCount(int marketCount) {this.marketCount = marketCount ;}
+	public int getMarketCount(){ return this.marketCount ;}
+	public String toString() {
+		return "{" + "" + "countryCode=" + getCountryCode() + "," + "marketCount=" + getMarketCount() + "}";
+	}
+
+	
+
+}

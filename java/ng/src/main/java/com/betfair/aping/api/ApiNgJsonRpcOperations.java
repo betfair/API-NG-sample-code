@@ -125,6 +125,48 @@ public class ApiNgJsonRpcOperations extends ApiNgOperations{
         return requester.sendPostRequestJsonRpc(requestString, operation, appKey, ssoToken);
 
        }
+       
+       	@Override
+	public List<CompetitionResult> listCompetitions(MarketFilter filter,
+			String locale, String appKey, String ssoId) throws APINGException {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put(FILTER, filter);
+		params.put(LOCALE, locale);
+		String result = getInstance().makeRequest(
+				ApiNgOperation.LISTCOMPETITIONS.getOperationName(), params,
+				appKey, ssoId);
+		if (ApiNGDemo.isDebug())
+			System.out.println("\nResponse: " + result);
+
+		CompetitionResultContainer container = JsonConverter.convertFromJson(
+				result, CompetitionResultContainer.class);
+		if (container.getError() != null)
+			throw container.getError().getData().getAPINGException();
+
+		return container.getResult();
+
+	}
+
+	@Override
+	public List<CountryCodeResult> listCountries(MarketFilter filter,
+			String locale, String appKey, String ssoId) throws APINGException {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put(FILTER, filter);
+		params.put(LOCALE, locale);
+		String result = getInstance().makeRequest(
+				ApiNgOperation.LISTCOUNTRIES.getOperationName(), params,
+				appKey, ssoId);
+		if (ApiNGDemo.isDebug())
+			System.out.println("\nResponse: " + result);
+
+		CountryCodeContainer container = JsonConverter.convertFromJson(
+				result, CountryCodeContainer.class);
+		if (container.getError() != null)
+			throw container.getError().getData().getAPINGException();
+
+		return container.getResult();
+
+	}
 
 }
 

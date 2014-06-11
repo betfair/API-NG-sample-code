@@ -108,6 +108,22 @@ public class ApiNgRescriptOperations extends ApiNgOperations {
         else
             throw new APINGException();
     }
+    
+    	@Override
+	public List<CompetitionResult> listCompetitions(MarketFilter filter,
+			String locale, String appKey, String ssoId) throws APINGException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<CountryCodeResult> listCountries(MarketFilter filter,
+			String locale, String appKey, String ssoId) throws APINGException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 }
 
