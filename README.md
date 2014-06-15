@@ -2,6 +2,8 @@
 
 This github respository contains sample code in various languages to help customers get started with writing betfair API-NG clients.   
 
+Please note, that we will not accept pull requests to extend these samples as they are not intended to be fully fledged clients.
+
 Each of the basic language samples demonstrates a basic use case of placing a bet on the next GB Horse Racing market:
 
 * Find the next UK Horse Racing Win market
