@@ -2,10 +2,9 @@
 #
 # Program to do the obvious
 #
-use JSON::RPC::LWP;
-use HTTP::Headers;
+use REST::Client;
+use JSON;
 use Data::Dumper;
-use JSON::RPC::Common::Procedure::Return;
 use DateTime;
 
 my $totalArgs = $#ARGV + 1;
@@ -23,17 +22,15 @@ print "App key being used: $appKey\n";
 my $sessionToken = $ARGV[1];
 print "Session token being used: $sessionToken\n";
 
-#prepare the json-rpc client
-my $apiClient = JSON::RPC::LWP->new;
-my $headers =  HTTP::Headers->new(
-       "X-Application" => "$appKey",
-       "X-Authentication" => "$sessionToken");
-$apiClient->ua->default_headers($headers);
-my $url="https://api.betfair.com/exchange/betting/json-rpc/v1";
+my $url="https://api.betfair.com/exchange/betting/rest/v1";
+my $apiClient = REST::Client->new({host => $url});
+$apiClient -> addHeader("X-Application", "$appKey");
+$apiClient -> addHeader("X-Authentication", "$sessionToken");
+$apiClient -> addHeader("Content-Type", "application/json");
+$apiClient -> addHeader("Accept", "application/json");
 
 #make a call to listEventTypes	
 my @eventTypeResults = getEventTypes();
-
 
 #Extract the result and extract eventTypeId for horse racing.
 my $horseRacingEventId = getEventId('Horse Racing', @eventTypeResults);
@@ -51,10 +48,9 @@ my $selectionId = @{$marketCatalogue -> {runners}}[0] -> {selectionId};
 #place failing bet
 placeFailingBet($marketId, $selectionId);
 
-
 sub placeFailingBet{
 	my ($marketId, $selectionId) = @_;
-	my $placeExecutionReport = callAPI("SportsAPING/v1/placeOrders",
+	my $placeExecutionReport = callAPI("/placeOrders/",
 		{
 			marketId => $marketId,
 			instructions => [
@@ -78,6 +74,7 @@ sub placeFailingBet{
 	
 }
 
+
 sub printPrices{
 	my ($marketBook) = @_;
 	my @runners = @{$marketBook -> {runners}};
@@ -95,7 +92,7 @@ sub printPrices{
 sub getMarketBook {
 	my (@marketIds) = @_;
 	return @{
-		callAPI("SportsAPING/v1/listMarketBook",
+		callAPI("/listMarketBook/",
 			{
 				marketIds => \@marketIds,
 				priceProjection => {
@@ -106,11 +103,12 @@ sub getMarketBook {
 	}[0];
 }
 
+
 sub getMarketCatalogueForNextGBWin{
 	my (@eventTypeIds) = @_;
 	my $now=DateTime->now;
 	return @{
-		callAPI("SportsAPING/v1/listMarketCatalogue", 
+		callAPI("/listMarketCatalogue/", 
 			{
 				filter => {
 					eventTypeIds => \@eventTypeIds,
@@ -140,19 +138,25 @@ sub getEventId {
 }
 
 sub getEventTypes {
-	return @{callAPI("SportsAPING/v1/listEventTypes",{filter => {}})};
+	return @{callAPI("/listEventTypes/", {filter => {}})};
 }
 
-sub callAPI {
+
+sub callAPI{
 	my($method,$params) = @_;
-	print "Calling api-ng method $method with params:\n";
+	print "Calling api-ng method $method with params: \n";
 	print Dumper($params);
-	my $call = $apiClient->call($url, $method, $params);
-	if ($call->has_error){
-			handleError($call->error);
+	$apiClient -> POST($method, encode_json($params));
+	if( $apiClient->responseCode() ne '200' ){
+		handleError(
+			{
+				responseCode => $apiClient->responseCode(), 
+				content => $apiClient->responseContent()
+			}
+		);
 	}
-	
-	return $call->result;
+	my $response = decode_json($apiClient->responseContent());
+	return $response;
 }
 
 sub handleError {
@@ -160,3 +164,10 @@ sub handleError {
 	print Dumper($error);
 	exit;
 }
+
+
+
+
+
+
+
