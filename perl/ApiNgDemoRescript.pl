@@ -30,27 +30,27 @@ $apiClient -> addHeader("Content-Type", "application/json");
 $apiClient -> addHeader("Accept", "application/json");
 
 #make a call to listEventTypes	
-my @eventTypeResults = getEventTypes();
+my @EventTypeResults = getEventTypes();
 
 #Extract the result and extract eventTypeId for horse racing.
-my $horseRacingEventId = getEventId('Horse Racing', @eventTypeResults);
+my $horseRacingEventId = getEventId('Horse Racing', @EventTypeResults);
 print "Got eventTypeId: $horseRacingEventId \n";
 #Get a merketCatalogue for the next GB WIN horse race market.
-my $marketCatalogue = getMarketCatalogueForNextGBWin($horseRacingEventId);
+my $MarketCatalogue = getMarketCatalogueForNextGBWin($horseRacingEventId);
 #Extract the marketId from the catalogue
-my $marketId = $marketCatalogue -> {marketId};
+my $marketId = $MarketCatalogue -> {marketId};
 #Get and print prices for the runner
-my $marketBook = getMarketBook($marketId);
-printPrices($marketBook);
+my $MarketBook = getMarketBook($marketId);
+printPrices($MarketBook);
 
 #SelectionId of the firstRunner in the market
-my $selectionId = @{$marketCatalogue -> {runners}}[0] -> {selectionId};
+my $selectionId = @{$MarketCatalogue -> {runners}}[0] -> {selectionId};
 #place failing bet
 placeFailingBet($marketId, $selectionId);
 
 sub placeFailingBet{
 	my ($marketId, $selectionId) = @_;
-	my $placeExecutionReport = callAPI("/placeOrders/",
+	my $PlaceExecutionReport = callAPI("/placeOrders/",
 		{
 			marketId => $marketId,
 			instructions => [
@@ -70,20 +70,20 @@ sub placeFailingBet{
 		}
 	);
 	print "Got execution report: \n";
-	print Dumper($placeExecutionReport);
+	print Dumper($PlaceExecutionReport);
 	
 }
 
 
 sub printPrices{
-	my ($marketBook) = @_;
-	my @runners = @{$marketBook -> {runners}};
-	foreach my $runner (@runners){
-		print "SelectionId of runner is: ", $runner -> {selectionId}, "\n";
-		if ($runner -> {status} eq "ACTIVE") {
-			print Dumper($runner -> {ex});
+	my ($MarketBook) = @_;
+	my @Runners = @{$MarketBook -> {runners}};
+	foreach my $Runner (@Runners){
+		print "SelectionId of runner is: ", $Runner -> {selectionId}, "\n";
+		if ($Runner -> {status} eq "ACTIVE") {
+			print Dumper($Runner -> {ex});
 		} else {
-			print "Runner is not active, current status is: ", $runner -> {status},  "\n";
+			print "Runner is not active, current status is: ", $Runner -> {status},  "\n";
 		}
 	}
 	
@@ -129,10 +129,10 @@ sub getMarketCatalogueForNextGBWin{
 }
 
 sub getEventId {
-	my ($eventName, @eventTypeResults) = @_;
-	for $eventTypeResult (@eventTypeResults) {
-		if ($eventTypeResult -> {'eventType'} -> {'name'} eq $eventName) {
-			return $eventTypeResult -> {'eventType'} -> {'id'};
+	my ($eventName, @EventTypeResults) = @_;
+	for $EventTypeResult (@EventTypeResults) {
+		if ($EventTypeResult -> {eventType} -> {name} eq $eventName) {
+			return $EventTypeResult -> {eventType} -> {id};
 		}
 	}
 }
@@ -155,8 +155,8 @@ sub callAPI{
 			}
 		);
 	}
-	my $response = decode_json($apiClient->responseContent());
-	return $response;
+	my $Response = decode_json($apiClient->responseContent());
+	return $Response;
 }
 
 sub handleError {
