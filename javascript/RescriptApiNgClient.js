@@ -22,8 +22,8 @@ function DemoApiNgClient(){
     function updateHeaders(operationName) {
         return  {
             port: 443,
-            hostname: 'api.betfair.com/exchange/betting',
-            path: '/rest/v1.0/' + operationName + '/',
+            hostname: 'api.betfair.com',
+            path: '/exchange/betting/rest/v1.0/' + operationName + '/',
             method: 'POST',
             headers: {
                 'X-Application' : appkey,
