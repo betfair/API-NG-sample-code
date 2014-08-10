@@ -29,5 +29,36 @@ namespace Api_ng_sample_code
          * */
         PlaceExecutionReport placeOrders(string marketId, string customerRef, IList<PlaceInstruction> placeInstructions, string locale = null);
 
+        /**
+         * Lists market profit and loss
+         * */
+        IList<MarketProfitAndLoss> listMarketProfitAndLoss(IList<string> marketIds, bool includeSettledBets = false, bool includeBspBets = false, bool netOfCommission = false);
+
+        /**
+         * Lists current orders
+         * */
+        CurrentOrderSummaryReport listCurrentOrders(ISet<String> betIds, ISet<String> marketIds, OrderProjection? orderProjection = null, TimeRange placedDateRange = null, OrderBy? orderBy = null, SortDir? sortDir = null, int? fromRecord = null, int? recordCount = null);
+
+        /**
+         * Lists cleared orders
+         * */
+        ClearedOrderSummaryReport listClearedOrders(BetStatus betStatus, ISet<string> eventTypeIds = null, ISet<string> eventIds = null, ISet<string> marketIds = null, ISet<RunnerId> runnerIds = null, ISet<string> betIds = null, Side? side = null, TimeRange settledDateRange = null, GroupBy? groupBy = null, bool? includeItemDescription = null, String locale = null, int? fromRecord = null, int? recordCount = null);
+
+        /**
+         * Cancels a bet, or decreases its size
+         * */
+        CancelExecutionReport cancelOrders(string marketId, IList<CancelInstruction> instructions, string customerRef);
+
+        /**
+         * Replaces a bet: changes the price
+         * */
+        ReplaceExecutionReport replaceOrders(String marketId, IList<ReplaceInstruction> instructions, String customerRef);
+
+        /**
+         * updates a bet
+         * */
+        UpdateExecutionReport updateOrders(String marketId, IList<UpdateInstruction> instructions, String customerRef);
+
+
     }
 }
