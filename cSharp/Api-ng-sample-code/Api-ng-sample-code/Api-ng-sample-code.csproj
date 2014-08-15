@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -79,8 +79,16 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="TO\APINGException.cs" />
+    <Compile Include="TO\BetStatus.cs" />
+    <Compile Include="TO\CancelExecutionReport-Mrt.cs" />
+    <Compile Include="TO\CancelInstruction.cs" />
+    <Compile Include="TO\CancelInstructionReport.cs" />
+    <Compile Include="TO\ClearedOrderSummary.cs" />
+    <Compile Include="TO\ClearedOrderSummaryReport.cs" />
     <Compile Include="TO\Competition.cs" />
     <Compile Include="TO\CompetitionResult.cs" />
+    <Compile Include="TO\CurrentOrderSummary.cs" />
+    <Compile Include="TO\CurrentOrderSummaryReport.cs" />
     <Compile Include="TO\Event.cs" />
     <Compile Include="TO\EventResult.cs" />
     <Compile Include="TO\EventType.cs" />
@@ -90,8 +98,10 @@
     <Compile Include="TO\ExchangePrices.cs" />
     <Compile Include="TO\ExecutionReportErrorCode.cs" />
     <Compile Include="TO\ExecutionReportStatus.cs" />
+    <Compile Include="TO\GroupBy-Mrt.cs" />
     <Compile Include="TO\InstructionReportErrorCode.cs" />
     <Compile Include="TO\InstructionReportStatus.cs" />
+    <Compile Include="TO\ItemDescription.cs" />
     <Compile Include="TO\LimitOnCloseOrder.cs" />
     <Compile Include="TO\LimitOrder.cs" />
     <Compile Include="TO\MarketBettingType.cs" />
@@ -100,12 +110,14 @@
     <Compile Include="TO\MarketDescription.cs" />
     <Compile Include="TO\MarketFilter.cs" />
     <Compile Include="TO\MarketOnCloseOrder.cs" />
+    <Compile Include="TO\MarketProfitAndLoss.cs" />
     <Compile Include="TO\MarketProjection.cs" />
     <Compile Include="TO\MarketSort.cs" />
     <Compile Include="TO\MarketStatus.cs" />
     <Compile Include="TO\Match.cs" />
     <Compile Include="TO\MatchProjection.cs" />
     <Compile Include="TO\Order.cs" />
+    <Compile Include="TO\OrderBy.cs" />
     <Compile Include="TO\OrderProjection.cs" />
     <Compile Include="TO\OrderStatus.cs" />
     <Compile Include="TO\OrderType.cs" />
@@ -116,13 +128,22 @@
     <Compile Include="TO\PriceData.cs" />
     <Compile Include="TO\PriceProjection.cs" />
     <Compile Include="TO\PriceSize.cs" />
+    <Compile Include="TO\ReplaceExecutionReport.cs" />
+    <Compile Include="TO\ReplaceInstruction.cs" />
+    <Compile Include="TO\ReplaceInstructionReport.cs" />
     <Compile Include="TO\RollUpModel.cs" />
     <Compile Include="TO\Runner.cs" />
     <Compile Include="TO\RunnerDescription.cs" />
+    <Compile Include="TO\RunnerId-Mrt.cs" />
+    <Compile Include="TO\RunnerProfitAndLost.cs" />
     <Compile Include="TO\RunnerStatus.cs" />
     <Compile Include="TO\Side.cs" />
+    <Compile Include="TO\SortDir.cs" />
     <Compile Include="TO\StartingPrices.cs" />
     <Compile Include="TO\TimeRange.cs" />
+    <Compile Include="TO\UpdateExecutionReport.cs" />
+    <Compile Include="TO\UpdateInstruction.cs" />
+    <Compile Include="TO\UpdateInstructionReport.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
