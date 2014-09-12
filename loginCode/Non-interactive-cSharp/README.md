@@ -13,9 +13,10 @@ Once you have made sure that your key is uploaded to the Betfair My Account -> M
 * Open up Visual Studio or Visual Studio Express and build the app once by pressing F7.
 * Open up the windows command line (cmd.exe) in the right place by holding Shift and Right clicking on the Debug directory within the "bin" folder in this project and select "Open Command Window here".
 * Run the tool by executing :
-``shell 
+```shell 
 Betfair-Non-Interactive-login.exe myUsername myAppKey "C:\Path to my\certificate.p12"
 ```
+
 * You will be asked to enter your password.
 * You will then be provided a session token.
 
