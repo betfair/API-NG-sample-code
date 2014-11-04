@@ -54,6 +54,7 @@ public class ApiNgJsonRpcOperations extends ApiNgOperations{
         params.put(PRICE_PROJECTION, priceProjection);
         params.put(ORDER_PROJECTION, orderProjection);
         params.put(MATCH_PROJECTION, matchProjection);
+        params.put("currencyCode", currencyCode);
         String result = getInstance().makeRequest(ApiNgOperation.LISTMARKETBOOK.getOperationName(), params, appKey, ssoId);
         if(ApiNGDemo.isDebug())
             System.out.println("\nResponse: "+result);
