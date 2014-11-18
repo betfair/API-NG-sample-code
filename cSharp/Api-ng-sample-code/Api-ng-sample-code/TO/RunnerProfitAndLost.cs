@@ -12,10 +12,10 @@ namespace Api_ng_sample_code.TO
         public long SelectionId { get; set; }
 
         [JsonProperty(PropertyName = "ifWin")]
-        public long IfWin { get; set; }
+        public double IfWin { get; set; }
 
         [JsonProperty(PropertyName = "ifLose")]
-        public long IfLose { get; set; }
+        public double IfLose { get; set; }
 
         public override string ToString()
         {
