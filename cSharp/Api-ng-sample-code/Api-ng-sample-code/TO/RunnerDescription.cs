@@ -17,6 +17,9 @@ namespace Api_ng_sample_code.TO
         [JsonProperty(PropertyName = "handicap")]
         public double Handicap { get; set; }
 
+        [JsonProperty(PropertyName = "sortPriority")]
+        public int SortPriority { get; set; }
+
         [JsonProperty(PropertyName = "metadata")]
         public Dictionary<string, string> Metadata { get; set; }
 
@@ -26,6 +29,7 @@ namespace Api_ng_sample_code.TO
                         .AppendFormat(" : SelectionId={0}", SelectionId)
                         .AppendFormat(" : runnerName={0}", RunnerName)
                         .AppendFormat(" : Handicap={0}", Handicap)
+                        .AppendFormat(" : SortPriority={0}", SortPriority)
                         .AppendFormat(" : Metadata={0}", Metadata)
                         .ToString();
         }
