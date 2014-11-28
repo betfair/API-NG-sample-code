@@ -1,0 +1,13 @@
+
+#Ignore files build by Visual Studio
+*[Bb]in*
+*[Oo]bj*
+*.user
+*.suo
+*.vspscc
+[Tt]est[Rr]esult*
+#ignore thumbnails created by windows
+Thumbs.db
+*.vssscc
+/packages/
+/packages/*
