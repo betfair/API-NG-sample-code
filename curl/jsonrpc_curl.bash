@@ -9,13 +9,12 @@ APP_KEY=$1
 SESSION_TOKEN=$2
 
 HOST=https://api.betfair.com/exchange/betting
-PORT=443
 
 # List all event types, providing app key and session token
 function list_all_event_types() {
  echo "LIST ALL EVENT TYPES"
 
- OUT=`curl -s -X POST --header "Accept: application/json" --header "Content-Type: application/json" --header "X-Application: $APP_KEY" --header "X-Authentication:   $SESSION_TOKEN" --data "[{ \"jsonrpc\": \"2.0\", \"method\": \"SportsAPING/v1.0/listEventTypes\", \"params\": {\"filter\":{}}, \"id\": 1}] " $HOST:$PORT/json-rpc`
+ OUT=`curl -s -X POST --header "Accept: application/json" --header "Content-Type: application/json" --header "X-Application: $APP_KEY" --header "X-Authentication:   $SESSION_TOKEN" --data "[{ \"jsonrpc\": \"2.0\", \"method\": \"SportsAPING/v1.0/listEventTypes\", \"params\": {\"filter\":{}}, \"id\": 1}] " $HOST/json-rpc/v1`
  echo $OUT | json_reformat
 }
 
@@ -31,7 +30,7 @@ function list_available_horse_races() {
  # get date now and format it
  local DATE=`date +"%Y-%m-%dT%TZ"`
 
- OUT=`curl -s -X POST --header "Accept: application/json" --header "Content-Type: application/json" --header "X-Application: $APP_KEY" --header "X-Authentication:   $SESSION_TOKEN"  --data "[{ \"jsonrpc\": \"2.0\", \"method\": \"SportsAPING/v1.0/listMarketCatalogue\", \"params\": {\"filter\":{\"eventTypeIds\":[$HORSE_RACING_EVENT_TYPE_ID], \"marketCountries\" :[\"GB\"],\"marketTypeCodes\" :[\"WIN\"],\"marketStartTime\":{\"from\":\"$DATE\"}},\"sort\":\"FIRST_TO_START\",\"maxResults\":\"$MAX_RESULTS\",\"marketProjection\":[\"RUNNER_DESCRIPTION\"]}, \"id\": 1}]" $HOST:$PORT/json-rpc/v1`
+ OUT=`curl -s -X POST --header "Accept: application/json" --header "Content-Type: application/json" --header "X-Application: $APP_KEY" --header "X-Authentication:   $SESSION_TOKEN"  --data "[{ \"jsonrpc\": \"2.0\", \"method\": \"SportsAPING/v1.0/listMarketCatalogue\", \"params\": {\"filter\":{\"eventTypeIds\":[$HORSE_RACING_EVENT_TYPE_ID], \"marketCountries\" :[\"GB\"],\"marketTypeCodes\" :[\"WIN\"],\"marketStartTime\":{\"from\":\"$DATE\"}},\"sort\":\"FIRST_TO_START\",\"maxResults\":\"$MAX_RESULTS\",\"marketProjection\":[\"RUNNER_DESCRIPTION\"]}, \"id\": 1}]" $HOST/json-rpc/v1`
  echo $OUT | json_reformat
 }
 
@@ -43,7 +42,7 @@ function list_runners() {
  # extract market id from prev. response
  MARKET_ID=`echo $OUT | cut -f10 -d "\""`
  
- OUT=`curl -s -X POST --header "Accept: application/json" --header "Content-Type: application/json" --header "X-Application: $APP_KEY" --header "X-Authentication:   $SESSION_TOKEN"  --data "[{ \"jsonrpc\": \"2.0\", \"method\": \"SportsAPING/v1.0/listMarketBook\", \"params\": {\"marketIds\":[\"$MARKET_ID\"],\"priceProjection\":{\"priceData\":[\"EX_BEST_OFFERS\"],\"exBestOfferOverRides\":{\"bestPricesDepth\":2,\"rollupModel\":\"STAKE\",\"rollupLimit\":20},\"virtualise\":false,\"rolloverStakes\":false},\"orderProjection\":\"ALL\",\"matchProjection\":\"ROLLED_UP_BY_PRICE\"}, \"id\": 1}]" $HOST:$PORT/json-rpc/v1`
+ OUT=`curl -s -X POST --header "Accept: application/json" --header "Content-Type: application/json" --header "X-Application: $APP_KEY" --header "X-Authentication:   $SESSION_TOKEN"  --data "[{ \"jsonrpc\": \"2.0\", \"method\": \"SportsAPING/v1.0/listMarketBook\", \"params\": {\"marketIds\":[\"$MARKET_ID\"],\"priceProjection\":{\"priceData\":[\"EX_BEST_OFFERS\"],\"exBestOfferOverRides\":{\"bestPricesDepth\":2,\"rollupModel\":\"STAKE\",\"rollupLimit\":20},\"virtualise\":false,\"rolloverStakes\":false},\"orderProjection\":\"ALL\",\"matchProjection\":\"ROLLED_UP_BY_PRICE\"}, \"id\": 1}]" $HOST/json-rpc/v1`
  echo $OUT | json_reformat
 }
 
@@ -62,7 +61,7 @@ function place_bet() {
 
  echo "Placing bet on : Selection Id: $SELECTION_ID, Side: $SIDE, Price: $PRICE, Size: $SIZE"
 
- OUT=`curl -s -X POST --header "Accept: application/json" --header "Content-Type: application/json" --header "X-Application: $APP_KEY" --header "X-Authentication:	$SESSION_TOKEN" --data "[{ \"jsonrpc\": \"2.0\", \"method\": \"SportsAPING/v1.0/placeOrders\", \"params\": {\"marketId\":\"$MARKET_ID\",\"instructions\":[{\"selectionId\":\"$SELECTION_ID\",\"handicap\":\"0\",\"side\":\"$SIDE\",\"orderType\":\"LIMIT\",\"limitOrder\":{\"size\":\"$SIZE\",\"price\":\"$PRICE\",\"persistenceType\":\"LAPSE\"}}],\"customerRef\":\"$REFERENCE\"}, \"id\": 1}]" $HOST:$PORT/json-rpc/v1`
+ OUT=`curl -s -X POST --header "Accept: application/json" --header "Content-Type: application/json" --header "X-Application: $APP_KEY" --header "X-Authentication:	$SESSION_TOKEN" --data "[{ \"jsonrpc\": \"2.0\", \"method\": \"SportsAPING/v1.0/placeOrders\", \"params\": {\"marketId\":\"$MARKET_ID\",\"instructions\":[{\"selectionId\":\"$SELECTION_ID\",\"handicap\":\"0\",\"side\":\"$SIDE\",\"orderType\":\"LIMIT\",\"limitOrder\":{\"size\":\"$SIZE\",\"price\":\"$PRICE\",\"persistenceType\":\"LAPSE\"}}],\"customerRef\":\"$REFERENCE\"}, \"id\": 1}]" $HOST/json-rpc/v1`
  echo $OUT | json_reformat
  # operation should return error as bet size is too small
  handleError $OUT

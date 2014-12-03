@@ -9,13 +9,12 @@ APP_KEY=$1
 SESSION_TOKEN=$2
 
 HOST=https://api.betfair.com/exchange/betting
-PORT=443
 
 
 # List all event types, providing app key and session token
 function list_all_event_types() {
  echo "LIST ALL EVENT TYPES"
- OUT=`curl -s -X POST --header "Accept: application/json" --header "Content-Type: application/json" --header "X-Application: $APP_KEY" --header "X-Authentication:   $SESSION_TOKEN" --data "{\"filter\":{}}" $HOST:$PORT/rest/v1/listEventTypes/`
+ OUT=`curl -s -X POST --header "Accept: application/json" --header "Content-Type: application/json" --header "X-Application: $APP_KEY" --header "X-Authentication:   $SESSION_TOKEN" --data "{\"filter\":{}}" $HOST/rest/v1/listEventTypes/`
  echo $OUT | json_reformat
 }
 
@@ -30,7 +29,7 @@ function list_available_horse_races() {
  # get date now and format it
  local DATE=`date +"%Y-%m-%dT%TZ"`
 
- OUT=`curl -s -X POST --header "Accept: application/json" --header "Content-Type: application/json" --header "X-Application: $APP_KEY" --header "X-Authentication:   $SESSION_TOKEN"  --data "{\"filter\":{\"eventTypeIds\":[$HORSE_RACING_EVENT_TYPE_ID],\"marketCountries\" :[\"GB\"],\"marketTypeCodes\":[\"WIN\"],\"marketStartTime\":{\"from\":\"$DATE\"}},\"sort\":\"FIRST_TO_START\",\"maxResults\":\"$MAX_RESULTS\",\"marketProjection\":[\"COMPETITION\",\"EVENT\",\"EVENT_TYPE\",\"MARKET_DESCRIPTION\",\"RUNNER_DESCRIPTION\"]}" $HOST:$PORT/rest/v1/listMarketCatalogue/`
+ OUT=`curl -s -X POST --header "Accept: application/json" --header "Content-Type: application/json" --header "X-Application: $APP_KEY" --header "X-Authentication:   $SESSION_TOKEN"  --data "{\"filter\":{\"eventTypeIds\":[$HORSE_RACING_EVENT_TYPE_ID],\"marketCountries\" :[\"GB\"],\"marketTypeCodes\":[\"WIN\"],\"marketStartTime\":{\"from\":\"$DATE\"}},\"sort\":\"FIRST_TO_START\",\"maxResults\":\"$MAX_RESULTS\",\"marketProjection\":[\"COMPETITION\",\"EVENT\",\"EVENT_TYPE\",\"MARKET_DESCRIPTION\",\"RUNNER_DESCRIPTION\"]}" $HOST/rest/v1/listMarketCatalogue/`
  echo $OUT | json_reformat
 }
 
@@ -41,7 +40,7 @@ function list_runners() {
  # extract market id from prev. response
  MARKET_ID=`echo $OUT | grep "marketId" | cut -f4 -d "\""`
 
-OUT=`curl -s -X POST --header "Accept: application/json" --header "Content-Type: application/json" --header "X-Application: $APP_KEY" --header "X-Authentication:   $SESSION_TOKEN"  --data "{\"marketIds\":[\"$MARKET_ID\"],\"priceProjection\":{\"priceData\":[\"EX_BEST_OFFERS\"],\"exBestOfferOverRides\":{\"bestPricesDepth\":2,\"rollupModel\":\"STAKE\",\"rollupLimit\":20},\"virtualise\":false,\"rolloverStakes\":false},\"orderProjection\":\"ALL\",\"matchProjection\":\"ROLLED_UP_BY_PRICE\"}" $HOST:$PORT/rest/v1/listMarketBook/`
+OUT=`curl -s -X POST --header "Accept: application/json" --header "Content-Type: application/json" --header "X-Application: $APP_KEY" --header "X-Authentication:   $SESSION_TOKEN"  --data "{\"marketIds\":[\"$MARKET_ID\"],\"priceProjection\":{\"priceData\":[\"EX_BEST_OFFERS\"],\"exBestOfferOverRides\":{\"bestPricesDepth\":2,\"rollupModel\":\"STAKE\",\"rollupLimit\":20},\"virtualise\":false,\"rolloverStakes\":false},\"orderProjection\":\"ALL\",\"matchProjection\":\"ROLLED_UP_BY_PRICE\"}" $HOST/rest/v1/listMarketBook/`
  echo $OUT | json_reformat
 }
 
@@ -59,7 +58,7 @@ function place_bet() {
 
  echo "PLACING BET >> SelectionId: $SELECTION_ID, Side: $SIDE, Price: $PRICE, Size: $SIZE"
 
- OUT=`curl -s -X POST --header "Accept: application/json" --header "Content-Type: application/json" --header "X-Application: $APP_KEY" --header "X-Authentication:	$SESSION_TOKEN" --data "{\"marketId\":\"$MARKET_ID\",\"instructions\":[{\"selectionId\":\"$SELECTION_ID\",\"handicap\":\"0\",\"side\":\"$SIDE\",\"orderType\":\"LIMIT\",\"limitOrder\":{\"size\":\"$SIZE\",\"price\":\"$PRICE\",\"persistenceType\":\"LAPSE\"}}],\"customerRef\":\"$REFERENCE\"}" $HOST:$PORT/rest/v1/placeOrders/`
+ OUT=`curl -s -X POST --header "Accept: application/json" --header "Content-Type: application/json" --header "X-Application: $APP_KEY" --header "X-Authentication:	$SESSION_TOKEN" --data "{\"marketId\":\"$MARKET_ID\",\"instructions\":[{\"selectionId\":\"$SELECTION_ID\",\"handicap\":\"0\",\"side\":\"$SIDE\",\"orderType\":\"LIMIT\",\"limitOrder\":{\"size\":\"$SIZE\",\"price\":\"$PRICE\",\"persistenceType\":\"LAPSE\"}}],\"customerRef\":\"$REFERENCE\"}" $HOST/rest/v1/placeOrders/`
  echo $OUT | json_reformat
  # operation should return error as bet size is too small
  handleError $OUT
