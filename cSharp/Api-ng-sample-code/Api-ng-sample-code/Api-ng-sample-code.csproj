@@ -73,6 +73,7 @@
     <Compile Include="Json\JsonRequest.cs" />
     <Compile Include="Json\JsonResponse.cs" />
     <Compile Include="Json\RescriptRequest.cs" />
+    <Compile Include="MarketTypeResult.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RescriptClient.cs">
