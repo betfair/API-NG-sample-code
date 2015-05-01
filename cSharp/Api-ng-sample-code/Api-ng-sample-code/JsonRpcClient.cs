@@ -126,6 +126,7 @@ namespace Api_ng_sample_code
             request.Method = "POST";
             request.ContentType = "application/json-rpc";
             request.Headers.Add(HttpRequestHeader.AcceptCharset, "ISO-8859-1,utf-8");
+            request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip");
             request.Headers.Add(CustomHeaders);
             return request;
         }
@@ -151,17 +152,35 @@ namespace Api_ng_sample_code
 
             using (WebResponse response = GetWebResponse(request))
             using (Stream stream = response.GetResponseStream())
-            using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
             {
-                var jsonResponse = JsonConvert.Import<T>(reader);
-                Console.WriteLine("\nGot Response: " + JsonConvert.Serialize<JsonResponse<T>>(jsonResponse));
-                if (jsonResponse.HasError)
+                if (response.ContentEncoding.ToLower() == "gzip")
                 {
-                    throw ReconstituteException(jsonResponse.Error);
+                    var jsonResponse = JsonConvert.ImportGzip<T>(stream);
+                    Console.WriteLine("\nGot Response: " + JsonConvert.Serialize<JsonResponse<T>>(jsonResponse));
+                    if (jsonResponse.HasError)
+                    {
+                        throw ReconstituteException(jsonResponse.Error);
+                    }
+                    else
+                    {
+                        return jsonResponse.Result;
+                    }
                 }
                 else
                 {
-                    return jsonResponse.Result;
+                    using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+                    {
+                        var jsonResponse = JsonConvert.Import<T>(reader);
+                        Console.WriteLine("\nGot Response: " + JsonConvert.Serialize<JsonResponse<T>>(jsonResponse));
+                        if (jsonResponse.HasError)
+                        {
+                            throw ReconstituteException(jsonResponse.Error);
+                        }
+                        else
+                        {
+                            return jsonResponse.Result;
+                        }
+                    }
                 }
             }
         }
