@@ -150,7 +150,7 @@ def placeFailingBet(marketId, selectionId):
             """
             print 'Reason for Place order failure is ' + place_order_result['instructionReports'][0]['errorCode']
         except:
-            print  'Exception from API-NG' + str(place_order_result['error'])
+            print  'Exception from API-NG' + str(place_order_load['error'])
         """
         print place_order_Response
         """
