@@ -74,7 +74,7 @@ var options = {
         var jsonDate = new Date().toJSON();
         console.log("Get next available horse race starting from date: " + jsonDate);
         var str = '';
-        var requestFilters = '{"filter":{"eventTypeIds": [' + eventId + '],"marketCountries":["GB"],"marketTypeCodes":["WIN"],"marketStartTime":{"from":"'+jsonDate+'"}},"sort":"FIRST_TO_START","maxResults":"1","marketProjection":["RUNNER_DESCRIPTION"]}}';
+        var requestFilters = '{"filter":{"eventTypeIds": [' + eventId + '],"marketCountries":["GB"],"marketTypeCodes":["WIN"],"marketStartTime":{"from":"'+jsonDate+'"}},"sort":"FIRST_TO_START","maxResults":"1","marketProjection":["RUNNER_DESCRIPTION"]}';
         var jsonRequest = constructJsonRpcRequest('listMarketCatalogue', requestFilters );
 		
         var req = https.request(options,function (res){
@@ -100,7 +100,7 @@ var options = {
     function getListOfRunners(options, response) {
         var marketId = retrieveMarketId(response);
         console.log("Get list of runners for market Id: " + marketId);
-        var requestFilters = '{"marketIds":["' + marketId + '"],"priceProjection":{"priceData":["EX_BEST_OFFERS"],"exBestOfferOverRides":{"bestPricesDepth":2,"rollupModel":"STAKE","rollupLimit":20},"virtualise":false,"rolloverStakes":false},"orderProjection":"ALL","matchProjection":"ROLLED_UP_BY_PRICE"}}';
+        var requestFilters = '{"marketIds":["' + marketId + '"],"priceProjection":{"priceData":["EX_BEST_OFFERS"],"exBestOfferOverRides":{"bestPricesDepth":2,"rollupModel":"STAKE","rollupLimit":20},"virtualise":false,"rolloverStakes":false},"orderProjection":"ALL","matchProjection":"ROLLED_UP_BY_PRICE"}';
         var jsonRequest = constructJsonRpcRequest('listMarketBook', requestFilters );
         var str = '';
         var req = https.request(options,function (res){
@@ -132,7 +132,7 @@ var options = {
         var size = '0.01';
         var customerRef = new Date().getMilliseconds();
         console.log("Place bet on runner with selection Id: " + selectionId);
-        var requestFilters = '{"marketId":"'+ marketId+'","instructions":[{"selectionId":"' + selectionId + '","handicap":"0","side":"BACK","orderType":"LIMIT","limitOrder":{"size":"' + size + '","price":"' + price + '","persistenceType":"LAPSE"}}],"customerRef":"'+customerRef+'"}}';
+        var requestFilters = '{"marketId":"'+ marketId+'","instructions":[{"selectionId":"' + selectionId + '","handicap":"0","side":"BACK","orderType":"LIMIT","limitOrder":{"size":"' + size + '","price":"' + price + '","persistenceType":"LAPSE"}}],"customerRef":"'+customerRef+'"}';
         var jsonRequest = constructJsonRpcRequest('placeOrders', requestFilters );
         var req = https.request(options,function (res){
             res.setEncoding(DEFAULT_ENCODING);
