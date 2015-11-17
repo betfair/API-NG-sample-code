@@ -19,6 +19,7 @@ namespace Api_ng_sample_code
         public const string SESSION_TOKEN_HEADER = "X-Authentication";
         public NameValueCollection CustomHeaders { get; set; }
         private static readonly string LIST_EVENT_TYPES_METHOD = "SportsAPING/v1.0/listEventTypes";
+        private static readonly string LIST_MARKET_TYPES_METHOD = "SportsAPING/v1.0/listMarketTypes";
         private static readonly string LIST_MARKET_CATALOGUE_METHOD = "SportsAPING/v1.0/listMarketCatalogue";
         private static readonly string LIST_MARKET_BOOK_METHOD = "SportsAPING/v1.0/listMarketBook";
         private static readonly string PLACE_ORDERS_METHOD = "SportsAPING/v1.0/placeOrders";
@@ -94,6 +95,14 @@ namespace Api_ng_sample_code
             return Invoke<List<MarketCatalogue>>(LIST_MARKET_CATALOGUE_METHOD, args);
         }
 
+        public IList<MarketTypeResult> listMarketTypes(MarketFilter marketFilter, string stringLocale)
+        {
+            var args = new Dictionary<string, object>();
+            args[FILTER] = marketFilter;
+            args[LOCALE] = stringLocale;
+            return Invoke<List<MarketTypeResult>>(LIST_MARKET_TYPES_METHOD, args);
+        }
+
         public IList<MarketBook> listMarketBook(IList<string> marketIds, PriceProjection priceProjection, OrderProjection? orderProjection = null, MatchProjection? matchProjection = null, string currencyCode = null, string locale = null)
         {
             var args = new Dictionary<string, object>();
@@ -155,7 +164,7 @@ namespace Api_ng_sample_code
             using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
             {
                 var jsonResponse = JsonConvert.Import<T>(reader);
-                Console.WriteLine("\nGot Response: " + JsonConvert.Serialize<JsonResponse<T>>(jsonResponse));
+               // Console.WriteLine("\nGot Response: " + JsonConvert.Serialize<JsonResponse<T>>(jsonResponse));
                 if (jsonResponse.HasError)
                 {
                     throw ReconstituteException(jsonResponse.Error);

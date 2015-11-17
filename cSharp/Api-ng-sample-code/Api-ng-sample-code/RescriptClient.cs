@@ -20,6 +20,7 @@ namespace Api_ng_sample_code
         public NameValueCollection CustomHeaders { get; set; }
         private static readonly string LIST_EVENT_TYPES_METHOD = "listEventTypes";
         private static readonly string LIST_MARKET_CATALOGUE_METHOD = "listMarketCatalogue";
+        private static readonly string LIST_MARKET_TYPES_METHOD = "listMarketTypes";
         private static readonly string LIST_MARKET_BOOK_METHOD = "listMarketBook";
         private static readonly string PLACE_ORDERS_METHOD = "placeOrders";
         private static readonly string LIST_MARKET_PROFIT_AND_LOST_METHOD = "listMarketProfitAndLoss";
@@ -257,6 +258,16 @@ namespace Api_ng_sample_code
             args[CUSTOMER_REFERENCE] = customerRef;
 
             return Invoke<UpdateExecutionReport>(UPDATE_ORDERS_METHOD, args);
+        }
+
+
+        public IList<MarketTypeResult> listMarketTypes(MarketFilter marketFilter, string stringLocale)
+        {
+            var args = new Dictionary<string, object>();
+            args[FILTER] = marketFilter;
+            args[LOCALE] = stringLocale;
+            return Invoke<List<MarketTypeResult>>(LIST_MARKET_TYPES_METHOD, args);
+
         }
     }
 }
