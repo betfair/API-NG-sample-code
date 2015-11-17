@@ -128,6 +128,7 @@ namespace Api_ng_sample_code
             request.Headers.Add(HttpRequestHeader.AcceptCharset, "UTF-8");
             request.Accept = "application/json";
             request.Headers.Add(CustomHeaders);
+            request.ServicePoint.Expect100Continue = false;
             return request;
         }
 
