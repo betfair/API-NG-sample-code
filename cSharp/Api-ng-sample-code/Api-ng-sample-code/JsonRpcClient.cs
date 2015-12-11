@@ -136,7 +136,7 @@ namespace Api_ng_sample_code
             request.ContentType = "application/json-rpc";
             request.Headers.Add(HttpRequestHeader.AcceptCharset, "ISO-8859-1,utf-8");
             request.Headers.Add(CustomHeaders);
-            request.ServicePoint.Expect100Continue = false;
+            ServicePointManager.Expect100Continue = false;
             return request;
         }
 
