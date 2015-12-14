@@ -79,6 +79,7 @@
     <Compile Include="RescriptClient.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="TO\AccountFundsResponse.cs" />
     <Compile Include="TO\APINGException.cs" />
     <Compile Include="TO\BetStatus.cs" />
     <Compile Include="TO\CancelExecutionReport-Mrt.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="TO\UpdateExecutionReport.cs" />
     <Compile Include="TO\UpdateInstruction.cs" />
     <Compile Include="TO\UpdateInstructionReport.cs" />
+    <Compile Include="TO\Wallet.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
