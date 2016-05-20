@@ -8,6 +8,7 @@ using System.Web.Services.Protocols;
 using System.Net;
 using System.IO;
 using Api_ng_sample_code.Json;
+using Api_ng_sample_code.TO;
 
 namespace Api_ng_sample_code
 {
@@ -29,8 +30,10 @@ namespace Api_ng_sample_code
         private static readonly string CANCEL_ORDERS_METHOD = "SportsAPING/v1.0/cancelOrders";
         private static readonly string REPLACE_ORDERS_METHOD = "SportsAPING/v1.0/replaceOrders";
         private static readonly string UPDATE_ORDERS_METHOD = "SportsAPING/v1.0/updateOrders";
+        private static readonly string GET_ACCOUNT_FUNDS_METHOD = "AccountAPING/v1.0/getAccountFunds";
         private static readonly String FILTER = "filter";
         private static readonly String LOCALE = "locale";
+        private static readonly String WALLET = "wallet";
         private static readonly String CURRENCY_CODE = "currencyCode";
         private static readonly String MARKET_PROJECTION = "marketProjection";
         private static readonly String MATCH_PROJECTION = "matchProjection";
@@ -263,5 +266,11 @@ namespace Api_ng_sample_code
             return Invoke<UpdateExecutionReport>(UPDATE_ORDERS_METHOD, args);
         }
 
+        public AccountFundsResponse getAccountFunds(Wallet wallet)
+        {
+            var args = new Dictionary<string, object>();
+            args[WALLET] = wallet;
+            return Invoke<AccountFundsResponse>(GET_ACCOUNT_FUNDS_METHOD, args);
+        }
     }
 }
