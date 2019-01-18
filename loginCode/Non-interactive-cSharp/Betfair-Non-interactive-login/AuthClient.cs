@@ -33,7 +33,7 @@ namespace Betfair_Non_interactive_login
             return clientHandler;
         }
 
-        private const string DEFAULT_COM_BASEURL = "https://identitysso.betfair.com";
+        private const string DEFAULT_COM_BASEURL = "https://identitysso-cert.betfair.com";
 
         private HttpClient initHttpClientInstance (WebRequestHandler clientHandler, string appKey, string baseUrl = DEFAULT_COM_BASEURL)
         {
