@@ -1,5 +1,7 @@
 package com.betfair.aping;
 
+import com.betfair.aping.api.ApiNgJsonRpcOperations;
+import com.betfair.aping.api.ApiNgRescriptOperations;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -106,10 +108,10 @@ public class ApiNGDemo {
         }
 
         if(jsonRpcRequest) {
-            ApiNGJsonRpcDemo jsonRpcDemo = new ApiNGJsonRpcDemo();
+            ApiNGDemoOperation jsonRpcDemo = new ApiNGDemoOperation(ApiNgJsonRpcOperations.getInstance());
             jsonRpcDemo.start(applicationKey, sessionToken);
         } else {
-            ApiNGJRescriptDemo rescriptDemo = new ApiNGJRescriptDemo();
+            ApiNGDemoOperation rescriptDemo = new ApiNGDemoOperation(ApiNgRescriptOperations.getInstance());
             rescriptDemo.start(applicationKey, sessionToken);
         }
     }
