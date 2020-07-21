@@ -4,7 +4,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using Api_ng_sample_code.TO;
-using System.Web.Services.Protocols;
 using System.Net;
 using System.IO;
 using Api_ng_sample_code.Json;

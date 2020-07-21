@@ -11,3 +11,4 @@ Thumbs.db
 *.vssscc
 /packages/
 /packages/*
+.vs/
