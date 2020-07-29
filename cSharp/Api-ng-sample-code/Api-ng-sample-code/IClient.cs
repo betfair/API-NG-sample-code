@@ -8,6 +8,11 @@ namespace Api_ng_sample_code
 {
     public interface IClient
     {
+        void KeepAlive();
+        IList<EventResult> listEvents(MarketFilter mf, string locale = null);
+        IList<MarketBook> listRunnerBook(string marketId, string selectionId, double handicap, PriceProjection priceProjection, MatchProjection matchProjection, bool includeOverallPosition, bool partitionMatchedByStrategyRef, ISet<string> customerStrategyRefs, string currencyCode, string locale, DateTime matchedSince, ISet<string> betIds);
+
+
         /**
          * calls api-ng to get a list of events
          * 

@@ -268,5 +268,21 @@ namespace Api_ng_sample_code
             return Invoke<List<MarketTypeResult>>(LIST_MARKET_TYPES_METHOD, args);
 
         }
+
+        public IList<EventResult> listEvents(MarketFilter marketFilter, string locale = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void KeepAlive()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<MarketBook> listRunnerBook(string marketId, string selectionId, double handicap, PriceProjection priceProjection, MatchProjection matchProjection, bool includeOverallPosition, bool partitionMatchedByStrategyRef, ISet<string> customerStrategyRefs, string currencyCode, string locale, DateTime matchedSince, ISet<string> betIds)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

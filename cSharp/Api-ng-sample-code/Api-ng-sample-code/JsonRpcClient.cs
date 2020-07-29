@@ -1,18 +1,44 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Text;
 using Api_ng_sample_code.TO;
 using System.Net;
 using System.IO;
 using Api_ng_sample_code.Json;
-using Api_ng_sample_code.TO;
 
 namespace Api_ng_sample_code
 {
     public class JsonRpcClient  : HttpWebClientProtocol, IClient
     {
+        public void KeepAlive()
+        {
+            WebRequest rq = WebRequest.Create(new Uri("https://identitysso.betfair.com/api/keepAlive"));
+            rq.Method = "GET";
+            rq.Headers.Add(CustomHeaders);
+            ((HttpWebRequest)rq).Accept = "application/json";
+            using (WebResponse response = GetWebResponse(rq))
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+            {
+                string s = reader.ReadToEnd();
+            }
+        }
+
+        private static readonly string LIST_EVENTS_METHOD = "SportsAPING/v1.0/listEvents";
+        public IList<EventResult> listEvents(MarketFilter marketFilter, string locale = null)
+        {
+            var args = new Dictionary<string, object>();
+            args[FILTER] = marketFilter;
+            args[LOCALE] = locale;
+            return Invoke<List<EventResult>>(LIST_EVENTS_METHOD, args);
+        }
+
+        public IList<MarketBook> listRunnerBook(string marketId, string selectionId, double handicap, PriceProjection priceProjection, MatchProjection matchProjection, bool includeOverallPosition, bool partitionMatchedByStrategyRef, ISet<string> customerStrategyRefs, string currencyCode, string locale, DateTime matchedSince, ISet<string> betIds)
+        {
+            throw new NotImplementedException();
+        }
+
         public string EndPoint { get; private set; }
         private static readonly IDictionary<string, Type> operationReturnTypeMap = new Dictionary<string, Type>();
         public const string APPKEY_HEADER = "X-Application";
