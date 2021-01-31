@@ -10,6 +10,6 @@ namespace Api_ng_sample_code.TO
     [JsonConverter(typeof(StringEnumConverter))]
     public enum RunnerStatus
     {
-        ACTIVE, WINNER, LOSER, REMOVED_VACANT, REMOVED, PLACED
+        ACTIVE, WINNER, LOSER, REMOVED_VACANT, REMOVED, PLACED, HIDDEN
     }
 }
