@@ -9,7 +9,7 @@ using Api_ng_sample_code.Json;
 
 namespace Api_ng_sample_code
 {
-    public class JsonRpcClient  : HttpWebClientProtocol, IClient
+    public class JsonRpcClient : HttpWebClientProtocol, IClient
     {
         public void KeepAlive()
         {
@@ -89,7 +89,7 @@ namespace Api_ng_sample_code
         private static readonly string INCLUDE_ITEM_DESCRIPTION = "includeItemDescription";
 
         public JsonRpcClient(string endPoint, string appKey, string sessionToken)
-		{
+        {
             this.EndPoint = endPoint + "/json-rpc/v1";
             CustomHeaders = new NameValueCollection();
             if (appKey != null)
@@ -100,7 +100,7 @@ namespace Api_ng_sample_code
             {
                 CustomHeaders[SESSION_TOKEN_HEADER] = sessionToken;
             }
-		}
+        }
 
 
         public IList<EventTypeResult> listEventTypes(MarketFilter marketFilter, string locale = null)
@@ -109,7 +109,7 @@ namespace Api_ng_sample_code
             args[FILTER] = marketFilter;
             args[LOCALE] = locale;
             return Invoke<List<EventTypeResult>>(LIST_EVENT_TYPES_METHOD, args);
-            
+
         }
 
         public IList<MarketCatalogue> listMarketCatalogue(MarketFilter marketFilter, ISet<MarketProjection> marketProjections, MarketSort marketSort, string maxResult = "1", string locale = null)
@@ -134,7 +134,7 @@ namespace Api_ng_sample_code
         public IList<MarketBook> listMarketBook(IList<string> marketIds, PriceProjection priceProjection, OrderProjection? orderProjection = null, MatchProjection? matchProjection = null, string currencyCode = null, string locale = null)
         {
             var args = new Dictionary<string, object>();
-            args[MARKET_IDS]= marketIds;
+            args[MARKET_IDS] = marketIds;
             args[PRICE_PROJECTION] = priceProjection;
             args[ORDER_PROJECTION] = orderProjection;
             args[MATCH_PROJECTION] = matchProjection;
@@ -146,11 +146,11 @@ namespace Api_ng_sample_code
         public PlaceExecutionReport placeOrders(string marketId, string customerRef, IList<PlaceInstruction> placeInstructions, string locale = null)
         {
             var args = new Dictionary<string, object>();
-            
-            args[MARKET_ID] =  marketId;
+
+            args[MARKET_ID] = marketId;
             args[INSTRUCTIONS] = placeInstructions;
             args[CUSTOMER_REFERENCE] = customerRef;
-            args[LOCALE] =  locale;
+            args[LOCALE] = locale;
 
             return Invoke<PlaceExecutionReport>(PLACE_ORDERS_METHOD, args);
         }
@@ -168,7 +168,7 @@ namespace Api_ng_sample_code
             return request;
         }
 
-
+        public event EventHandler<APINGException> OnAPINGException;
 
         public T Invoke<T>(string method, IDictionary<string, object> args = null)
         {
@@ -185,17 +185,19 @@ namespace Api_ng_sample_code
                 var call = new JsonRequest { Method = method, Id = 1, Params = args };
                 JsonConvert.Export(call, writer);
             }
-            Console.WriteLine("\nCalling: " + method +  " With args: " + JsonConvert.Serialize<IDictionary<string, object>>(args));
+            Console.WriteLine("\nCalling: " + method + " With args: " + JsonConvert.Serialize<IDictionary<string, object>>(args));
 
             using (WebResponse response = GetWebResponse(request))
             using (Stream stream = response.GetResponseStream())
             using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
             {
                 var jsonResponse = JsonConvert.Import<T>(reader);
-               // Console.WriteLine("\nGot Response: " + JsonConvert.Serialize<JsonResponse<T>>(jsonResponse));
+                // Console.WriteLine("\nGot Response: " + JsonConvert.Serialize<JsonResponse<T>>(jsonResponse));
                 if (jsonResponse.HasError)
                 {
-                    throw ReconstituteException(jsonResponse.Error);
+                    APINGException e = ReconstituteException(jsonResponse.Error);
+                    OnAPINGException(this, e);
+                    throw e;
                 }
                 else
                 {
@@ -204,8 +206,7 @@ namespace Api_ng_sample_code
             }
         }
 
-
-        private static System.Exception ReconstituteException(Api_ng_sample_code.TO.Exception ex)
+        private static APINGException ReconstituteException(Api_ng_sample_code.TO.Exception ex)
         {
             var data = ex.Data;
 
