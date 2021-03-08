@@ -9,7 +9,9 @@ namespace Api_ng_sample_code.TO
 {
     public class APINGException : System.Exception
     {
-        protected APINGException(SerializationInfo info, StreamingContext context)
+        public APINGException() : base() { }
+
+        public APINGException(SerializationInfo info, StreamingContext context)
         {
             this.ErrorDetails = info.GetString("errorDetails");
             this.ErrorCode = info.GetString("errorCode");
