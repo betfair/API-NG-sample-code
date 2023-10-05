@@ -4,13 +4,23 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using Api_ng_sample_code.TO;
-using System.Web.Services.Protocols;
 using System.Net;
 using System.IO;
 using Api_ng_sample_code.Json;
 
 namespace Api_ng_sample_code
 {
+    /// <summary>
+    /// Replacement for System.Web.Services.HttpWebClientProtocol
+    /// </summary>
+    public abstract class HttpWebClientProtocol
+    {
+        protected WebResponse GetWebResponse(WebRequest request)
+        {
+            return request.GetResponse();
+        }
+    }
+
     public class RescriptClient : HttpWebClientProtocol, IClient
     {
         public string EndPoint { get; private set; }
@@ -60,9 +70,9 @@ namespace Api_ng_sample_code
         private static readonly string GROUP_BY = "groupBy";
         private static readonly string INCLUDE_ITEM_DESCRIPTION = "includeItemDescription";
 
-     
+
         public RescriptClient(string endPoint, string appKey, string sessionToken)
-		{
+        {
             this.EndPoint = endPoint + "/rest/v1/";
             CustomHeaders = new NameValueCollection();
             if (appKey != null)
@@ -73,7 +83,12 @@ namespace Api_ng_sample_code
             {
                 CustomHeaders[SESSION_TOKEN_HEADER] = sessionToken;
             }
-		}
+        }
+
+        public AccountFundsResponse getAccountFunds(Wallet wallet)
+        {
+            throw new NotImplementedException();
+        }
 
         public IList<EventTypeResult> listEventTypes(MarketFilter marketFilter, string locale = null)
         {
@@ -133,6 +148,7 @@ namespace Api_ng_sample_code
             return request;
         }
 
+        public event EventHandler<APINGException> OnAPINGException;
 
         public T Invoke<T>(string method, IDictionary<string, object> args = null)
         {
@@ -157,31 +173,34 @@ namespace Api_ng_sample_code
             }
 
             using (HttpWebResponse response = (HttpWebResponse)GetWebResponse(request))
-           
+
             using (Stream stream = response.GetResponseStream())
             using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
             {
 
                 var jsonResponse = reader.ReadToEnd();
                 Console.WriteLine("\nGot response: " + jsonResponse);
-                
-                if (response.StatusCode != HttpStatusCode.OK) {
-                    throw ReconstituteException(JsonConvert.Deserialize<Api_ng_sample_code.TO.Exception>(jsonResponse));
+
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    APINGException e = ReconstituteException(JsonConvert.Deserialize<Api_ng_sample_code.TO.Exception>(jsonResponse));
+                    OnAPINGException(this, e);
+                    throw e;
                 }
                 return JsonConvert.Deserialize<T>(jsonResponse);
 
             }
         }
 
-        private static System.Exception ReconstituteException(Api_ng_sample_code.TO.Exception ex)
+        private static APINGException ReconstituteException(Api_ng_sample_code.TO.Exception ex)
         {
             var data = ex.Detail;
-        
+
             // API-NG exception -- it must have "data" element to tell us which exception
             var exceptionName = data.Property("exceptionname").Value.ToString();
             var exceptionData = data.Property(exceptionName).Value.ToString();
             return JsonConvert.Deserialize<APINGException>(exceptionData);
-            
+
         }
 
         public IList<MarketProfitAndLoss> listMarketProfitAndLoss(IList<string> marketIds, bool includeSettledBets = false, bool includeBspBets = false, bool netOfCommission = false)
@@ -269,5 +288,21 @@ namespace Api_ng_sample_code
             return Invoke<List<MarketTypeResult>>(LIST_MARKET_TYPES_METHOD, args);
 
         }
+
+        public IList<EventResult> listEvents(MarketFilter marketFilter, string locale = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void KeepAlive()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<MarketBook> listRunnerBook(string marketId, string selectionId, double handicap, PriceProjection priceProjection, MatchProjection matchProjection, bool includeOverallPosition, bool partitionMatchedByStrategyRef, ISet<string> customerStrategyRefs, string currencyCode, string locale, DateTime matchedSince, ISet<string> betIds)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
