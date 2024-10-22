@@ -1,20 +1,48 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Text;
-using Api_ng_sample_code.TO;
-using System.Web.Services.Protocols;
 using System.Net;
 using System.IO;
 using Api_ng_sample_code.Json;
 using Api_ng_sample_code.TO;
+using System.Linq;
 
 namespace Api_ng_sample_code
 {
-    public class JsonRpcClient  : HttpWebClientProtocol, IClient
+    public class JsonRpcClient : HttpWebClientProtocol, IClient
     {
-        public string EndPoint { get; private set; }
+        public void KeepAlive()
+        {
+            WebRequest rq = WebRequest.Create(new Uri(EndPointKeepAlive));
+            rq.Method = "GET";
+            rq.Headers.Add(CustomHeaders);
+            ((HttpWebRequest)rq).Accept = "application/json";
+            using (WebResponse response = GetWebResponse(rq))
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+            {
+                string s = reader.ReadToEnd();
+            }
+        }
+
+        private static readonly string LIST_EVENTS_METHOD = "SportsAPING/v1.0/listEvents";
+        public IList<EventResult> listEvents(MarketFilter marketFilter, string locale = null)
+        {
+            var args = new Dictionary<string, object>();
+            args[FILTER] = marketFilter;
+            args[LOCALE] = locale;
+            return Invoke<List<EventResult>>(LIST_EVENTS_METHOD, args);
+        }
+
+        public IList<MarketBook> listRunnerBook(string marketId, string selectionId, double handicap, PriceProjection priceProjection, MatchProjection matchProjection, bool includeOverallPosition, bool partitionMatchedByStrategyRef, ISet<string> customerStrategyRefs, string currencyCode, string locale, DateTime matchedSince, ISet<string> betIds)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string EndPointBetting { get; private set; }
+        public string EndPointAccount { get; private set; }
+        public string EndPointKeepAlive { get; private set; }
         private static readonly IDictionary<string, Type> operationReturnTypeMap = new Dictionary<string, Type>();
         public const string APPKEY_HEADER = "X-Application";
         public const string SESSION_TOKEN_HEADER = "X-Authentication";
@@ -63,9 +91,13 @@ namespace Api_ng_sample_code
         private static readonly string GROUP_BY = "groupBy";
         private static readonly string INCLUDE_ITEM_DESCRIPTION = "includeItemDescription";
 
-        public JsonRpcClient(string endPoint, string appKey, string sessionToken)
-		{
-            this.EndPoint = endPoint + "/json-rpc/v1";
+        private static readonly string[] _AccountApiMethods = { GET_ACCOUNT_FUNDS_METHOD };
+
+        public JsonRpcClient(string endPointBetting, string endPointAccount, string endPointKeepAlive, string appKey, string sessionToken)
+        {
+            EndPointBetting = endPointBetting + "/json-rpc/v1";
+            EndPointAccount = endPointAccount + "/json-rpc/v1";
+            EndPointKeepAlive = endPointKeepAlive;
             CustomHeaders = new NameValueCollection();
             if (appKey != null)
             {
@@ -75,7 +107,7 @@ namespace Api_ng_sample_code
             {
                 CustomHeaders[SESSION_TOKEN_HEADER] = sessionToken;
             }
-		}
+        }
 
 
         public IList<EventTypeResult> listEventTypes(MarketFilter marketFilter, string locale = null)
@@ -84,7 +116,7 @@ namespace Api_ng_sample_code
             args[FILTER] = marketFilter;
             args[LOCALE] = locale;
             return Invoke<List<EventTypeResult>>(LIST_EVENT_TYPES_METHOD, args);
-            
+
         }
 
         public IList<MarketCatalogue> listMarketCatalogue(MarketFilter marketFilter, ISet<MarketProjection> marketProjections, MarketSort marketSort, string maxResult = "1", string locale = null)
@@ -109,7 +141,7 @@ namespace Api_ng_sample_code
         public IList<MarketBook> listMarketBook(IList<string> marketIds, PriceProjection priceProjection, OrderProjection? orderProjection = null, MatchProjection? matchProjection = null, string currencyCode = null, string locale = null)
         {
             var args = new Dictionary<string, object>();
-            args[MARKET_IDS]= marketIds;
+            args[MARKET_IDS] = marketIds;
             args[PRICE_PROJECTION] = priceProjection;
             args[ORDER_PROJECTION] = orderProjection;
             args[MATCH_PROJECTION] = matchProjection;
@@ -121,11 +153,11 @@ namespace Api_ng_sample_code
         public PlaceExecutionReport placeOrders(string marketId, string customerRef, IList<PlaceInstruction> placeInstructions, string locale = null)
         {
             var args = new Dictionary<string, object>();
-            
-            args[MARKET_ID] =  marketId;
+
+            args[MARKET_ID] = marketId;
             args[INSTRUCTIONS] = placeInstructions;
             args[CUSTOMER_REFERENCE] = customerRef;
-            args[LOCALE] =  locale;
+            args[LOCALE] = locale;
 
             return Invoke<PlaceExecutionReport>(PLACE_ORDERS_METHOD, args);
         }
@@ -134,7 +166,7 @@ namespace Api_ng_sample_code
 
         protected WebRequest CreateWebRequest(Uri uri)
         {
-            WebRequest request = WebRequest.Create(new Uri(EndPoint));
+            WebRequest request = WebRequest.Create(uri);
             request.Method = "POST";
             request.ContentType = "application/json-rpc";
             request.Headers.Add(HttpRequestHeader.AcceptCharset, "ISO-8859-1,utf-8");
@@ -143,7 +175,7 @@ namespace Api_ng_sample_code
             return request;
         }
 
-
+        public event EventHandler<APINGException> OnAPINGException;
 
         public T Invoke<T>(string method, IDictionary<string, object> args = null)
         {
@@ -152,7 +184,7 @@ namespace Api_ng_sample_code
             if (method.Length == 0)
                 throw new ArgumentException(null, "method");
 
-            var request = CreateWebRequest(new Uri(EndPoint));
+            var request = _AccountApiMethods.Contains(method) ? CreateWebRequest(new Uri(EndPointAccount)) : CreateWebRequest(new Uri(EndPointBetting));
 
             using (Stream stream = request.GetRequestStream())
             using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
@@ -160,17 +192,19 @@ namespace Api_ng_sample_code
                 var call = new JsonRequest { Method = method, Id = 1, Params = args };
                 JsonConvert.Export(call, writer);
             }
-            Console.WriteLine("\nCalling: " + method +  " With args: " + JsonConvert.Serialize<IDictionary<string, object>>(args));
+            Console.WriteLine("\nCalling: " + method + " With args: " + JsonConvert.Serialize<IDictionary<string, object>>(args));
 
             using (WebResponse response = GetWebResponse(request))
             using (Stream stream = response.GetResponseStream())
             using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
             {
                 var jsonResponse = JsonConvert.Import<T>(reader);
-               // Console.WriteLine("\nGot Response: " + JsonConvert.Serialize<JsonResponse<T>>(jsonResponse));
+                // Console.WriteLine("\nGot Response: " + JsonConvert.Serialize<JsonResponse<T>>(jsonResponse));
                 if (jsonResponse.HasError)
                 {
-                    throw ReconstituteException(jsonResponse.Error);
+                    APINGException e = ReconstituteException(jsonResponse.Error);
+                    OnAPINGException(this, e);
+                    throw e;
                 }
                 else
                 {
@@ -179,8 +213,7 @@ namespace Api_ng_sample_code
             }
         }
 
-
-        private static System.Exception ReconstituteException(Api_ng_sample_code.TO.Exception ex)
+        private static APINGException ReconstituteException(Api_ng_sample_code.TO.Exception ex)
         {
             var data = ex.Data;
 
