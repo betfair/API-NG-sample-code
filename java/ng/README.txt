@@ -16,7 +16,7 @@ You need Apache Maven in order to build the application. Execute:
 ##### How to invoke:
 
 You can again use Apache Maven to run the application passing the app key, session token and the method (json-rpc or rescript:
-    mvn exec:java -Dexec.mainClass="com.betfair.aping.ApiNGDemo" -Dexec.args="<YOUR APP KEY> <YOUR SESSION TOKEN> <METHOD>"
+    mvn exec:java -Dexec.mainClass="com.betfair.aping.ApiNGDemo" -Dexec.args="71Vc1h6gFCxzSATi qN33UPyUXsS1gXrFD9VNDpd6AE/0BoAopjNcKd9NWe8= json-rpc"
 
     <YOUR APP KEY>: a valid app key
     <YOUR SESSION TOKEN>: a valid Betfair session token

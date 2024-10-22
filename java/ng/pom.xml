@@ -11,7 +11,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.compiler.version>1.6</java.compiler.version>
+        <java.compiler.version>1.8</java.compiler.version>
 	</properties>
 
     <build>
