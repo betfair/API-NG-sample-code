@@ -28,25 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.btnLogout = new System.Windows.Forms.Button();
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.grpAppKey = new System.Windows.Forms.GroupBox();
             this.txtAppKey = new System.Windows.Forms.TextBox();
             this.btnLogon = new System.Windows.Forms.Button();
+            this.webview2 = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.grpAppKey.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.webview2)).BeginInit();
             this.SuspendLayout();
-            // 
-            // webBrowser1
-            // 
-            this.webBrowser1.Location = new System.Drawing.Point(27, 19);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.ScriptErrorsSuppressed = true;
-            this.webBrowser1.Size = new System.Drawing.Size(986, 510);
-            this.webBrowser1.TabIndex = 0;
-            this.webBrowser1.Url = new System.Uri("", System.UriKind.Relative);
-            this.webBrowser1.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
             // 
             // btnLogout
             // 
@@ -97,35 +87,46 @@
             this.btnLogon.UseVisualStyleBackColor = true;
             this.btnLogon.Click += new System.EventHandler(this.btnLogon_Click);
             // 
+            // webview2
+            // 
+            this.webview2.AllowExternalDrop = true;
+            this.webview2.CreationProperties = null;
+            this.webview2.DefaultBackgroundColor = System.Drawing.Color.White;
+            this.webview2.Location = new System.Drawing.Point(27, 21);
+            this.webview2.Name = "webview2";
+            this.webview2.Size = new System.Drawing.Size(986, 524);
+            this.webview2.TabIndex = 6;
+            this.webview2.ZoomFactor = 1D;
+            this.webview2.NavigationCompleted += new System.EventHandler<Microsoft.Web.WebView2.Core.CoreWebView2NavigationCompletedEventArgs>(this.webview2_NavigationCompleted);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.ClientSize = new System.Drawing.Size(1040, 639);
+            this.Controls.Add(this.webview2);
             this.Controls.Add(this.btnLogon);
             this.Controls.Add(this.grpAppKey);
             this.Controls.Add(this.btnLogout);
-            this.Controls.Add(this.webBrowser1);
             this.Controls.Add(this.txtMessage);
             this.Name = "Form1";
             this.Text = "Form1";
             this.grpAppKey.ResumeLayout(false);
             this.grpAppKey.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.webview2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.Button btnLogout;
         private System.Windows.Forms.TextBox txtMessage;
         private System.Windows.Forms.GroupBox grpAppKey;
         private System.Windows.Forms.TextBox txtAppKey;
         private System.Windows.Forms.Button btnLogon;
-
+        private Microsoft.Web.WebView2.WinForms.WebView2 webview2;
     }
 }
 

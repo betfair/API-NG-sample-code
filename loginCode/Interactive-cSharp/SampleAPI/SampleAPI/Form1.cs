@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Net;
-
+using Microsoft.Web.WebView2.Core;
 
 namespace SampleAPI
 {
@@ -36,38 +36,39 @@ namespace SampleAPI
             tt.InitialDelay = 0;
             tt.ShowAlways = true;
             tt.SetToolTip(this.grpAppKey, "Please enter your developer Appkey");
-  
         }
 
-        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        private async void webview2_NavigationCompleted(object sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationCompletedEventArgs e)
         {
+            string c = "";
+            if (webview2.Source.IdnHost == "www.betfair.com")
+            {
+                List<CoreWebView2Cookie> cookies = await this.webview2.CoreWebView2.CookieManager.GetCookiesAsync(KeepAliveURL);
 
-            //On embeded web browser response get cookie
-            string cookie = this.webBrowser1.Document.Cookie;
+                foreach (var cookie in cookies)
+                {
+                    c += cookie.Name + "=" + cookie.Value + ";";
+                }
+            }
 
-            
-            if (cookie != null)
-                this.ParseCookie(cookie);
+            if (c != "")
+                this.ParseCookie(c);
 
             //If successfull login start KeepAlive 
             if (!m_LoggedOut && !m_KeepAliveTimer.Enabled)
             {
-                webBrowser1.Visible = false;
-                SetMessage("Logon successfull\r\n SSOID=" + m_SSOID);
-                
+                SetMessage("Logged In");
 
-                
                 this.StartKeepAlive();
             }
         }
 
         private void ParseCookie(string p_Cookie)
         {
-
             //If logon on OK get SSOID
             if (m_LoggedOut && p_Cookie.IndexOf("loggedIn=true;") >= 0)
             {
-               
+
                 int SSOIDIndex = p_Cookie.IndexOf("ssoid=");
 
                 if (SSOIDIndex >= 0)
@@ -80,9 +81,7 @@ namespace SampleAPI
                     m_SSOID = "SSOID Not present";
             }
         }
-     
 
-    
         private void btnLogout_Click(object sender, EventArgs e)
         {
             m_KeepAliveTimer.Enabled = false;
@@ -90,77 +89,72 @@ namespace SampleAPI
             m_LoggedOut = true;
 
             System.Uri u = new Uri(LogoutURL);
-            this.webBrowser1.Url = u;
-            this.webBrowser1.Navigate(u);
+            webview2.Source = u;
+            webview2.NavigateToString(LogoutURL);
 
             SetMessage("Logged out");
-
- 
-
         }
 
         private void StartKeepAlive()
-        {            
+        {
             m_KeepAliveTimer.Elapsed += new System.Timers.ElapsedEventHandler(OnKeepAliveTimer);
             // Set the Interval to 15 mins.
             m_KeepAliveTimer.Interval = 1000 * 60 * 15;
             m_KeepAliveTimer.Enabled = true;
-
-
         }
 
-       private void OnKeepAliveTimer(object source, System.Timers.ElapsedEventArgs e)
+        private void OnKeepAliveTimer(object source, System.Timers.ElapsedEventArgs e)
         {
-
             System.Uri u = new Uri(KeepAliveURL);
-            this.webBrowser1.Url = u;
-            this.webBrowser1.Navigate(u);
+            this.Invoke((MethodInvoker)delegate {
+                webview2.Source = u;
+                webview2.NavigateToString(KeepAliveURL);
+            });
 
             m_KeepAliveCount++;
             SetMessage("Keep Alive sent " + m_KeepAliveCount);
-
         }
 
-
         //Thread safe TextBox Set text
-       delegate void SetTextCallback(string p_Text);
-       private void SetMessage(string p_Text)
-       {
-           // InvokeRequired required compares the thread ID of the
-           // calling thread to the thread ID of the creating thread.
-           // If these threads are different, it returns true.
-           if (this.txtMessage.InvokeRequired)
-           {
-               SetTextCallback d = new SetTextCallback(SetMessage);
-               this.Invoke(d, new object[] { p_Text });
-           }
-           else
-           {
-               this.txtMessage.Text = p_Text;
-           }
-       }
+        delegate void SetTextCallback(string p_Text);
+        private void SetMessage(string p_Text)
+        {
+            // InvokeRequired required compares the thread ID of the
+            // calling thread to the thread ID of the creating thread.
+            // If these threads are different, it returns true.
+            if (this.txtMessage.InvokeRequired)
+            {
+                SetTextCallback d = new SetTextCallback(SetMessage);
+                this.Invoke(d, new object[] { p_Text });
+            }
+            else
+            {
+                this.txtMessage.Text = p_Text;
+            }
+        }
 
+        private void btnLogon_Click(object sender, EventArgs e)
+        {
+            //Put Appkey in Logon anf Logout URLs
+            LogonURL = LogonURL.Replace("[APPKEY]", this.txtAppKey.Text);
+            LogoutURL = LogoutURL.Replace("[APPKEY]", this.txtAppKey.Text);
 
-       private void btnLogon_Click(object sender, EventArgs e)
-       {
-           //Put Appkey in Logon anf Logout URLs
-           LogonURL = LogonURL.Replace("[APPKEY]", this.txtAppKey.Text);
-           LogoutURL = LogoutURL.Replace("[APPKEY]", this.txtAppKey.Text);
+            //Give embeded web browser Betfair api login page URL
+            System.Uri u = new Uri(LogonURL);
 
-           //Give embeded web browser Betfair api login page URL
-           System.Uri u = new Uri(LogonURL);
+            this.webview2.Source = u;
 
-           this.webBrowser1.Url = u;
+            this.btnLogout.Enabled = true;
+        }
 
-           this.btnLogout.Enabled = true;
+        private void txtAppKey_KeyUp(object sender, KeyEventArgs e)
+        {
+            this.btnLogon.Enabled = true;
+        }
 
-       }
+        private void webview2_Click(object sender, EventArgs e)
+        {
 
-       private void txtAppKey_KeyUp(object sender, KeyEventArgs e)
-       {
-           this.btnLogon.Enabled = true;
-       }
-   
-       
+        }
     }
 }
