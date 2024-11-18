@@ -92,7 +92,8 @@ def getMarketId(marketCatalogueResult):
     if( marketCatalogueResult is not None):
         for market in marketCatalogueResult:
             return market['marketId']
-
+    else:
+        print ('Market Catalogue result is none')
 
 def getSelectionId(marketCatalogueResult):
     if(marketCatalogueResult is not None):
@@ -101,7 +102,11 @@ def getSelectionId(marketCatalogueResult):
 
 
 def getMarketBookBestOffers(marketId):
-    print ('Calling listMarketBook to read prices for the Market with ID :' + marketId)
+    # print ('Calling listMarketBook to read prices for the Market with ID :' + marketId)
+    if marketId is not None:
+        print('Calling listMarketBook to read prices for the Market with ID :' + marketId)
+    else:
+        print('Market ID is None, cannot read prices.')
     market_book_req = '{"jsonrpc": "2.0", "method": "SportsAPING/v1.0/listMarketBook", "params": {"marketIds":["' + marketId + '"],"priceProjection":{"priceData":["EX_BEST_OFFERS"]}}, "id": 1}'
     """
 print(market_book_req)
@@ -144,16 +149,24 @@ print(place_order_Req)
 """
         place_order_Response = callAping(place_order_Req)
         place_order_load = json.loads(place_order_Response)
+        """
+        print(place_order_Req)
+        print(place_order_load)
+        """
         try:
             place_order_result = place_order_load['result']
             print ('Place order status is ' + place_order_result['status'])
+            instruction_reports = place_order_result['instructionReports']
+            bet_id = instruction_reports[0]['betId']
+            print ('Bet id is ' + bet_id)
             """
 print('Place order error status is ' + place_order_result['errorCode'])
 """
-            print ('Reason for Place order failure is ' + place_order_result['instructionReports'][0]['errorCode'])
         except:
+            print ('Reason for Place order failure is ' + place_order_result['instructionReports'][0]['errorCode'])
+
             print ('Exception from API-NG' + str(place_order_result['error']))
-        """
+"""
 print(place_order_Response)
 """
 
