@@ -86,7 +86,6 @@ function printMarketIdAndRunners($nextHorseRacingMarket)
 
 }
 
-
 function getMarketBook($appKey, $sessionToken, $marketId)
 {
     $params = '{"marketIds":["' . $marketId . '"], "priceProjection":{"priceData":["EX_BEST_OFFERS"]}}';
@@ -95,7 +94,6 @@ function getMarketBook($appKey, $sessionToken, $marketId)
 
     return $jsonResponse[0]->result[0];
 }
-
 
 function printMarketIdRunnersAndPrices($nextHorseRacingMarket, $marketBook)
 {
@@ -162,40 +160,42 @@ function printBetResult($betResult)
         echo "Warning!!! Bet placement succeeded !!!";
 }
 
-
-function sportsApingRequest($appKey, $sessionToken, $operation, $params)
+//php8.3
+function sportsApingRequest(string $appKey, string $sessionToken, string $operation, string $params)
 {
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "https://api.betfair.com/exchange/betting/json-rpc/v1");
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_URL, "https://api.betfair.com/exchange/betting/rest/v1.0/$operation/");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
         'X-Application: ' . $appKey,
         'X-Authentication: ' . $sessionToken,
+        'X-IP: 212.58.244.20',
         'Accept: application/json',
         'Content-Type: application/json'
     ));
 
-    $postData =
-        '[{ "jsonrpc": "2.0", "method": "SportsAPING/v1.0/' . $operation . '", "params" :' . $params . ', "id": 1}]';
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-
-    debug('Post Data: ' . $postData);
-    $response = json_decode(curl_exec($ch));
+    debug('Post Data: ' . $params);
+    $response = json_decode(curl_exec($ch));  // Decode as associative array
     debug('Response: ' . json_encode($response));
 
+    $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    debug('Status: ' . $http_status);
     curl_close($ch);
 
     if (isset($response[0]->error)) {
         echo 'Call to api-ng failed: ' . "\n";
-        echo  'Response: ' . json_encode($response);
+        echo 'Response: ' . json_encode($response);
         exit(-1);
     } else {
         return $response;
     }
 
+
 }
+
 
 function debug($debugString)
 {
