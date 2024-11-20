@@ -10,7 +10,7 @@ $APP_KEY = $argv[1];
 $SESSION_TOKEN = $argv[2];
 
 // Setting DEBUG to true will output all request / responses to api-ng.
-$DEBUG = True;
+$DEBUG = False;
 
 echo "1. Get all Event Types....\n";
 $allEventTypes = getAllEventTypes($APP_KEY, $SESSION_TOKEN);
@@ -137,7 +137,7 @@ function placeBet($appKey, $sessionToken, $marketId, $selectionId)
                        "side":"BACK",
                        "orderType":
                        "LIMIT",
-                       "limitOrder":{"size":"1",
+                       "limitOrder":{"size":"0.01",
                                     "price":"1000",
                                     "persistenceType":"LAPSE"}
                        }], "customerRef":"fsdf"}';
@@ -156,8 +156,11 @@ function printBetResult($betResult)
         echo "\nErrorCode: " . $betResult->errorCode;
         echo "\n\nInstruction Status: " . $betResult->instructionReports[0]->status;
         echo "\nInstruction ErrorCode: " . $betResult->instructionReports[0]->errorCode;
-    } else
+    } else {
         echo "Warning!!! Bet placement succeeded !!!";
+        $betId = $betResult->instructionReports[0]->betId;
+        echo "\nBetId: " . $betId;
+    }
 }
 
 //php8.3

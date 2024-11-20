@@ -44,7 +44,7 @@ function getAllEventTypes($appKey, $sessionToken)
 
     $jsonResponse = sportsApingRequest($appKey, $sessionToken, 'listEventTypes', '{"filter":{}}');
 
-    return $jsonResponse[0]->result;
+    return $jsonResponse;
 
 }
 
@@ -71,7 +71,7 @@ function getNextUkHorseRacingMarket($appKey, $sessionToken, $horseRacingEventTyp
 
     $jsonResponse = sportsApingRequest($appKey, $sessionToken, 'listMarketCatalogue', $params);
 
-    return $jsonResponse[0]->result[0];
+    return $jsonResponse[0];
 }
 
 function printMarketIdAndRunners($nextHorseRacingMarket)
@@ -92,7 +92,7 @@ function getMarketBook($appKey, $sessionToken, $marketId)
 
     $jsonResponse = sportsApingRequest($appKey, $sessionToken, 'listMarketBook', $params);
 
-    return $jsonResponse[0]->result[0];
+    return $jsonResponse[0];
 }
 
 function printMarketIdRunnersAndPrices($nextHorseRacingMarket, $marketBook)
@@ -137,14 +137,14 @@ function placeBet($appKey, $sessionToken, $marketId, $selectionId)
                        "side":"BACK",
                        "orderType":
                        "LIMIT",
-                       "limitOrder":{"size":"1",
+                       "limitOrder":{"size":"0.01",
                                     "price":"1000",
                                     "persistenceType":"LAPSE"}
                        }], "customerRef":"fsdf"}';
 
     $jsonResponse = sportsApingRequest($appKey, $sessionToken, 'placeOrders', $params);
 
-    return $jsonResponse[0]->result;
+    return $jsonResponse;
 
 }
 
@@ -156,8 +156,11 @@ function printBetResult($betResult)
         echo "\nErrorCode: " . $betResult->errorCode;
         echo "\n\nInstruction Status: " . $betResult->instructionReports[0]->status;
         echo "\nInstruction ErrorCode: " . $betResult->instructionReports[0]->errorCode;
-    } else
+    } else {
         echo "Warning!!! Bet placement succeeded !!!";
+        $betId = $betResult->instructionReports[0]->betId;
+        echo "\nBetId: " . $betId;
+    }
 }
 
 //php8.3
@@ -185,12 +188,12 @@ function sportsApingRequest(string $appKey, string $sessionToken, string $operat
     debug('Status: ' . $http_status);
     curl_close($ch);
 
-    if (isset($response[0]->error)) {
+    if ($http_status === 200) {
+        return $response;
+    } else {
         echo 'Call to api-ng failed: ' . "\n";
         echo 'Response: ' . json_encode($response);
         exit(-1);
-    } else {
-        return $response;
     }
 
 
