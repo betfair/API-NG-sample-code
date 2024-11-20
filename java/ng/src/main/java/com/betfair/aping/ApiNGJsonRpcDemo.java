@@ -38,7 +38,7 @@ public class ApiNGJsonRpcDemo {
 
             System.out.println("1.(listEventTypes) Get all Event Types...\n");
             List<EventTypeResult> r = jsonOperations.listEventTypes(marketFilter, applicationKey, sessionToken);
-            System.out.println("2. Extract Event Type Id for Horse Racing...\n");
+            System.out.println("2. Extract Event Type Id for Soccer...\n");
             for (EventTypeResult eventTypeResult : r) {
                 if(eventTypeResult.getEventType().getName().equals("Horse Racing")){
                     System.out.println("3. EventTypeId for \"Horse Racing\" is: " + eventTypeResult.getEventType().getId()+"\n");
@@ -53,7 +53,7 @@ public class ApiNGJsonRpcDemo {
              * marketStartTime: specify date (must be in this format: yyyy-mm-ddTHH:MM:SSZ)
              * sort: FIRST_TO_START - specify sort order to first to start race
              */
-            System.out.println("4.(listMarketCataloque) Get next horse racing market in the UK...\n");
+            System.out.println("4.(listMarketCataloque) Get next Soccer market in the UK...\n");
             TimeRange time = new TimeRange();
             time.setFrom(new Date());
 
@@ -72,90 +72,104 @@ public class ApiNGJsonRpcDemo {
             Set<MarketProjection> marketProjection = new HashSet<MarketProjection>();
             marketProjection.add(MarketProjection.RUNNER_DESCRIPTION);
 
-            String maxResults = "1";
+            String maxResults = "20";
 
-            List<MarketCatalogue> marketCatalogueResult = jsonOperations.listMarketCatalogue(marketFilter, marketProjection, MarketSort.FIRST_TO_START, maxResults,
+            List<MarketCatalogue> marketCatalogueResult = jsonOperations.listMarketCatalogue(marketFilter, marketProjection, MarketSort.MAXIMUM_TRADED, maxResults, //MINIMUM_AVAILABLE
                     applicationKey, sessionToken);
 
             System.out.println("5. Print static marketId, name and runners....\n");
-            printMarketCatalogue(marketCatalogueResult.get(0));
             /**
              * ListMarketBook: get list of runners in the market, parameters:
              * marketId:  the market we want to list runners
              *
              */
-            System.out.println("6.(listMarketBook) Get volatile info for Market including best 3 exchange prices available...\n");
-            String marketIdChosen = marketCatalogueResult.get(0).getMarketId();
+            //for loop to find the first active market
+            for (int i = 0; i < 20; i++) {
 
-            PriceProjection priceProjection = new PriceProjection();
-            Set<PriceData> priceData = new HashSet<PriceData>();
-            priceData.add(PriceData.EX_BEST_OFFERS);
-            priceProjection.setPriceData(priceData);
+                String marketIdChosen = marketCatalogueResult.get(i).getMarketId();
 
-            //In this case we don't need these objects so they are declared null
-            OrderProjection orderProjection = null;
-            MatchProjection matchProjection = null;
-            String currencyCode = null;
+                PriceProjection priceProjection = new PriceProjection();
+                Set<PriceData> priceData = new HashSet<PriceData>();
+                priceData.add(PriceData.EX_BEST_OFFERS);
+                priceProjection.setPriceData(priceData);
 
-            List<String> marketIds = new ArrayList<String>();
-            marketIds.add(marketIdChosen);
+                //In this case we don't need these objects so they are declared null
+                OrderProjection orderProjection = null;
+                MatchProjection matchProjection = null;
+                String currencyCode = null;
 
-            List<MarketBook> marketBookReturn = jsonOperations.listMarketBook(marketIds, priceProjection,
-                    orderProjection, matchProjection, currencyCode, applicationKey, sessionToken);
+                List<String> marketIds = new ArrayList<String>();
+                marketIds.add(marketIdChosen);
 
-            /**
-             * PlaceOrders: we try to place a bet, based on the previous request we provide the following:
-             * marketId: the market id
-             * selectionId: the runner selection id we want to place the bet on
-             * side: BACK - specify side, can be Back or Lay
-             * orderType: LIMIT - specify order type
-             * size: the size of the bet
-             * price: the price of the bet
-             * customerRef: 1 - unique reference for a transaction specified by user, must be different for each request
-             *
-             */
+                List<MarketBook> marketBookReturn = jsonOperations.listMarketBook(marketIds, priceProjection,
+                        orderProjection, matchProjection, currencyCode, applicationKey, sessionToken);
 
-            long selectionId = 0;
-            if ( marketBookReturn.size() != 0 ) {
-                Runner runner = marketBookReturn.get(0).getRunners().get(0);
-                selectionId = runner.getSelectionId();
-                System.out.println("7. Place a bet below minimum stake to prevent the bet actually " +
-                        "being placed for marketId: "+marketIdChosen+" with selectionId: "+selectionId+"...\n\n");
-                List<PlaceInstruction> instructions = new ArrayList<PlaceInstruction>();
-                PlaceInstruction instruction = new PlaceInstruction();
-                instruction.setHandicap(0);
-                instruction.setSide(Side.BACK);
-                instruction.setOrderType(OrderType.LIMIT);
+                String status = marketBookReturn.get(0).getStatus();
 
-                LimitOrder limitOrder = new LimitOrder();
-                limitOrder.setPersistenceType(PersistenceType.LAPSE);
-                //API-NG will return an error with the default size=0.01. This is an expected behaviour.
-                //You can adjust the size and price value in the "apingdemo.properties" file
-                limitOrder.setPrice(getPrice());
-                limitOrder.setSize(getSize());
+                if (status.equals("OPEN")){
 
-                instruction.setLimitOrder(limitOrder);
-                instruction.setSelectionId(selectionId);
-                instructions.add(instruction);
+                    printMarketCatalogue(marketCatalogueResult.get(i));
+                    System.out.println("6.(listMarketBook) Get volatile info for Market including best 3 exchange prices available...\n");
 
-                String customerRef = "1";
+                    /**
+                     * PlaceOrders: we try to place a bet, based on the previous request we provide the following:
+                     * marketId: the market id
+                     * selectionId: the runner selection id we want to place the bet on
+                     * side: BACK - specify side, can be Back or Lay
+                     * orderType: LIMIT - specify order type
+                     * size: the size of the bet
+                     * price: the price of the bet
+                     * customerRef: 1 - unique reference for a transaction specified by user, must be different for each request
+                     *
+                     */
 
-                PlaceExecutionReport placeBetResult = jsonOperations.placeOrders(marketIdChosen, instructions, customerRef, applicationKey, sessionToken);
+                    long selectionId = 0;
+                    if (marketBookReturn.size() != 0) {
+                        Runner runner = marketBookReturn.get(0).getRunners().get(0);
+                        selectionId = runner.getSelectionId();
+                        System.out.println("7. Place a bet below minimum stake to prevent the bet actually " +
+                                "being placed for marketId: " + marketIdChosen + " with selectionId: " + selectionId + "...\n\n");
+                        List<PlaceInstruction> instructions = new ArrayList<PlaceInstruction>();
+                        PlaceInstruction instruction = new PlaceInstruction();
+                        instruction.setHandicap(0);
+                        instruction.setSide(Side.BACK);
+                        instruction.setOrderType(OrderType.LIMIT);
 
-                // Handling the operation result
-                if (placeBetResult.getStatus() == ExecutionReportStatus.SUCCESS) {
-                    System.out.println("Your bet has been placed!!");
-                    System.out.println(placeBetResult.getInstructionReports());
-                } else if (placeBetResult.getStatus() == ExecutionReportStatus.FAILURE) {
-                    System.out.println("Your bet has NOT been placed :*( ");
-                    System.out.println("The error is: " + placeBetResult.getErrorCode() + ": " + placeBetResult.getErrorCode().getMessage());
+                        LimitOrder limitOrder = new LimitOrder();
+                        limitOrder.setPersistenceType(PersistenceType.LAPSE);
+                        //API-NG will return an error with the default size=0.01. This is an expected behaviour.
+                        //You can adjust the size and price value in the "apingdemo.properties" file
+                        limitOrder.setPrice(getPrice());
+                        limitOrder.setSize(getSize());
+
+                        instruction.setLimitOrder(limitOrder);
+                        instruction.setSelectionId(selectionId);
+                        instructions.add(instruction);
+
+                        String customerRef = "1";
+
+                        PlaceExecutionReport placeBetResult = jsonOperations.placeOrders(marketIdChosen, instructions, customerRef, applicationKey, sessionToken);
+
+                        List<PlaceInstructionReport> instructionReport = placeBetResult.getInstructionReports();
+                        String betId = instructionReport.get(0).getBetId();
+
+                        // Handling the operation result
+                        if (placeBetResult.getStatus() == ExecutionReportStatus.SUCCESS) {
+                            System.out.println("Your bet has been placed!! " + "Bet Id = " + betId + "\n");
+                            System.out.println(placeBetResult.getInstructionReports());
+                        } else if (placeBetResult.getStatus() == ExecutionReportStatus.FAILURE) {
+                            System.out.println("Your bet has NOT been placed :*( ");
+                            System.out.println("The error is: " + placeBetResult.getErrorCode() + ": " + placeBetResult.getErrorCode().getMessage());
+                        }
+                    } else {
+                        System.out.println("Sorry, no runners found\n\n");
+                    }
+                    break;
                 }
-            } else {
-                System.out.println("Sorry, no runners found\n\n");
             }
 
         } catch (APINGException apiExc) {
-            System.out.println(apiExc.toString());
+            apiExc.printStackTrace();
         }
     }
 

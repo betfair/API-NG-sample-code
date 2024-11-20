@@ -44,7 +44,7 @@ function getAllEventTypes($appKey, $sessionToken)
 
     $jsonResponse = sportsApingRequest($appKey, $sessionToken, 'listEventTypes', '{"filter":{}}');
 
-    return $jsonResponse[0]->result;
+    return $jsonResponse;
 
 }
 
@@ -71,7 +71,7 @@ function getNextUkHorseRacingMarket($appKey, $sessionToken, $horseRacingEventTyp
 
     $jsonResponse = sportsApingRequest($appKey, $sessionToken, 'listMarketCatalogue', $params);
 
-    return $jsonResponse[0]->result[0];
+    return $jsonResponse[0];
 }
 
 function printMarketIdAndRunners($nextHorseRacingMarket)
@@ -86,16 +86,14 @@ function printMarketIdAndRunners($nextHorseRacingMarket)
 
 }
 
-
 function getMarketBook($appKey, $sessionToken, $marketId)
 {
     $params = '{"marketIds":["' . $marketId . '"], "priceProjection":{"priceData":["EX_BEST_OFFERS"]}}';
 
     $jsonResponse = sportsApingRequest($appKey, $sessionToken, 'listMarketBook', $params);
 
-    return $jsonResponse[0]->result[0];
+    return $jsonResponse[0];
 }
-
 
 function printMarketIdRunnersAndPrices($nextHorseRacingMarket, $marketBook)
 {
@@ -139,14 +137,14 @@ function placeBet($appKey, $sessionToken, $marketId, $selectionId)
                        "side":"BACK",
                        "orderType":
                        "LIMIT",
-                       "limitOrder":{"size":"1",
+                       "limitOrder":{"size":"0.01",
                                     "price":"1000",
                                     "persistenceType":"LAPSE"}
                        }], "customerRef":"fsdf"}';
 
     $jsonResponse = sportsApingRequest($appKey, $sessionToken, 'placeOrders', $params);
 
-    return $jsonResponse[0]->result;
+    return $jsonResponse;
 
 }
 
@@ -158,44 +156,49 @@ function printBetResult($betResult)
         echo "\nErrorCode: " . $betResult->errorCode;
         echo "\n\nInstruction Status: " . $betResult->instructionReports[0]->status;
         echo "\nInstruction ErrorCode: " . $betResult->instructionReports[0]->errorCode;
-    } else
+    } else {
         echo "Warning!!! Bet placement succeeded !!!";
+        $betId = $betResult->instructionReports[0]->betId;
+        echo "\nBetId: " . $betId;
+    }
 }
 
-
-function sportsApingRequest($appKey, $sessionToken, $operation, $params)
+//php8.3
+function sportsApingRequest(string $appKey, string $sessionToken, string $operation, string $params)
 {
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "https://api.betfair.com/exchange/betting/json-rpc/v1");
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_URL, "https://api.betfair.com/exchange/betting/rest/v1.0/$operation/");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
         'X-Application: ' . $appKey,
         'X-Authentication: ' . $sessionToken,
+        'X-IP: 212.58.244.20',
         'Accept: application/json',
         'Content-Type: application/json'
     ));
 
-    $postData =
-        '[{ "jsonrpc": "2.0", "method": "SportsAPING/v1.0/' . $operation . '", "params" :' . $params . ', "id": 1}]';
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-
-    debug('Post Data: ' . $postData);
-    $response = json_decode(curl_exec($ch));
+    debug('Post Data: ' . $params);
+    $response = json_decode(curl_exec($ch));  // Decode as associative array
     debug('Response: ' . json_encode($response));
 
+    $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    debug('Status: ' . $http_status);
     curl_close($ch);
 
-    if (isset($response[0]->error)) {
-        echo 'Call to api-ng failed: ' . "\n";
-        echo  'Response: ' . json_encode($response);
-        exit(-1);
-    } else {
+    if ($http_status === 200) {
         return $response;
+    } else {
+        echo 'Call to api-ng failed: ' . "\n";
+        echo 'Response: ' . json_encode($response);
+        exit(-1);
     }
 
+
 }
+
 
 function debug($debugString)
 {

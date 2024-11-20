@@ -40,8 +40,8 @@ public class ApiNGJRescriptDemo {
             List<EventTypeResult> r = rescriptOperations.listEventTypes(marketFilter, applicationKey, sessionToken);
             System.out.println("2. Extract Event Type Id for Horse Racing...\n");
             for (EventTypeResult eventTypeResult : r) {
-                if(eventTypeResult.getEventType().getName().equals("Horse Racing")){
-                    System.out.println("3. EventTypeId for \"Horse Racing\" is: " + eventTypeResult.getEventType().getId()+"\n");
+                if (eventTypeResult.getEventType().getName().equals("Horse Racing")) {
+                    System.out.println("3. EventTypeId for \"Horse Racing\" is: " + eventTypeResult.getEventType().getId() + "\n");
                     eventTypeIds.add(eventTypeResult.getEventType().getId().toString());
                 }
             }
@@ -72,7 +72,7 @@ public class ApiNGJRescriptDemo {
             Set<MarketProjection> marketProjection = new HashSet<MarketProjection>();
             marketProjection.add(MarketProjection.RUNNER_DESCRIPTION);
 
-            String maxResults = "1";
+            String maxResults = "20";
 
             List<MarketCatalogue> marketCatalogueResult = rescriptOperations.listMarketCatalogue(marketFilter, marketProjection, MarketSort.FIRST_TO_START, maxResults,
                     applicationKey, sessionToken);
@@ -85,7 +85,9 @@ public class ApiNGJRescriptDemo {
              *
              */
             System.out.println("6.(listMarketBook) Get volatile info for Market including best 3 exchange prices available...\n");
-            String marketIdChosen = marketCatalogueResult.get(0).getMarketId();
+            for (int i = 0; i < 20; i++) {
+
+                String marketIdChosen = marketCatalogueResult.get(i).getMarketId();
 
             PriceProjection priceProjection = new PriceProjection();
             Set<PriceData> priceData = new HashSet<PriceData>();
@@ -116,11 +118,11 @@ public class ApiNGJRescriptDemo {
              */
 
             long selectionId = 0;
-            if ( marketBookReturn.size() != 0 ) {
+            if (marketBookReturn.size() != 0) {
                 Runner runner = marketBookReturn.get(0).getRunners().get(0);
                 selectionId = runner.getSelectionId();
                 System.out.println("7. Place a bet below minimum stake to prevent the bet actually " +
-                        "being placed for marketId: "+marketIdChosen+" with selectionId: "+selectionId+"...\n\n");
+                        "being placed for marketId: " + marketIdChosen + " with selectionId: " + selectionId + "...\n\n");
                 List<PlaceInstruction> instructions = new ArrayList<PlaceInstruction>();
                 PlaceInstruction instruction = new PlaceInstruction();
                 instruction.setHandicap(0);
@@ -142,9 +144,12 @@ public class ApiNGJRescriptDemo {
 
                 PlaceExecutionReport placeBetResult = rescriptOperations.placeOrders(marketIdChosen, instructions, customerRef, applicationKey, sessionToken);
 
+                List<PlaceInstructionReport> instructionReport = placeBetResult.getInstructionReports();
+                String betId = instructionReport.get(0).getBetId();
+
                 // Handling the operation result
                 if (placeBetResult.getStatus() == ExecutionReportStatus.SUCCESS) {
-                    System.out.println("Your bet has been placed!!");
+                    System.out.println("Your bet has been placed!! " + "Bet Id = " + betId + "\n");
                     System.out.println(placeBetResult.getInstructionReports());
                 } else if (placeBetResult.getStatus() == ExecutionReportStatus.FAILURE) {
                     System.out.println("Your bet has NOT been placed :*( ");
@@ -153,9 +158,11 @@ public class ApiNGJRescriptDemo {
             } else {
                 System.out.println("Sorry, no runners found\n\n");
             }
-
+            break;
+            }
         } catch (APINGException apiExc) {
-            System.out.println(apiExc.toString());
+            apiExc.printStackTrace();
+
         }
     }
 
