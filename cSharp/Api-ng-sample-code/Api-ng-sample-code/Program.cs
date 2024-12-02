@@ -48,7 +48,7 @@ namespace Api_ng_sample_code
             }else
             {
                 Console.WriteLine("Using JsonRpcClient");
-                client = new JsonRpcClient(Url, appkey, sessionToken);
+                client = new JsonRpcClient(Url, null, null, appkey, sessionToken);
             }
             Console.WriteLine("\nBeginning sample run!\n");
 
