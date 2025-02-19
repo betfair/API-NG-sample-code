@@ -165,7 +165,8 @@ namespace Api_ng_sample_code
             using (WebResponse response = GetWebResponse(request))
             using (Stream stream = response.GetResponseStream())
             {
-                if (response.ContentEncoding.ToLower() == "gzip")
+                string contentEncoding = response.Headers["Content-Encoding"];
+                if(contentEncoding?.ToLower() == "gzip")
                 {
                     var jsonResponse = JsonConvert.ImportGzip<T>(stream);
                     Console.WriteLine("\nGot Response: " + JsonConvert.Serialize<JsonResponse<T>>(jsonResponse));
